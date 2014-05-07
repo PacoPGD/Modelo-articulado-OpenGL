@@ -87,12 +87,24 @@ void EscalaVentana(GLsizei w, GLsizei h){
 	gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
 	//glOrtho(-100.0f, 100.0f, -100.0f, 100.0f, -50.0, 50.0);
 }
+
 void myKeyboard(unsigned char key,int x, int y){
 	switch(key){
-		case 27:
-			exit(0);
-			break;
+		case 'o':
+			if(e.joinSelect<e.joins.size()-1)
+			{
+				e.joinSelect++;
+			}
+		break;
+		case 'l':
+			if(e.joinSelect>0)
+			{
+				e.joinSelect--;
+			}
+		break;
+
 	}
+	glutPostRedisplay();
 }
 
 void myKeyboardSpecial(int key,int x, int y){
