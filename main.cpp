@@ -26,6 +26,10 @@ Esqueleto e;
 /********************************************************************/
 int hsize=500;
 
+GLdouble eyeX=100;
+GLdouble eyeY=0;
+GLdouble eyeZ=-200.0f;
+
 void dibujarEje(){
 		glLineWidth(1.0f);
 		glBegin(GL_LINES);
@@ -68,9 +72,6 @@ void EscalaVentana(GLsizei w, GLsizei h){
 	GLdouble  zNear=100.0;
 	GLdouble  zFar=500.0;
 	gluPerspective(  fovy,    aspect,    zNear,    zFar);
-	GLdouble eyeX=100;
-	GLdouble eyeY=0;
-	GLdouble eyeZ=-200.0f;
 	GLdouble centerX=0;
 	GLdouble centerY=0;
 	GLdouble centerZ=0;
@@ -88,6 +89,29 @@ void myKeyboard(unsigned char key,int x, int y){
 	}
 }
 
+void myKeyboardSpecial(int key,int x, int y){
+		switch(key){
+			case GLUT_KEY_LEFT:
+				eyeX-=10.0f;
+				break;
+			case GLUT_KEY_RIGHT:
+				eyeX+=10.0f;
+				break;
+			case GLUT_KEY_UP:
+				eyeY+=10.0f;
+				break;
+			case GLUT_KEY_DOWN:
+				eyeY-=10.0f;
+				break;
+			case GLUT_KEY_PAGE_DOWN:
+				eyeZ-=10.0f;
+				break;
+			case GLUT_KEY_PAGE_UP:
+				eyeZ+=10.0f;
+				break;
+		}
+}
+
 int main(int argcp, char **argv){
   e.init();
   glutInit(&argcp,argv);
@@ -97,9 +121,9 @@ int main(int argcp, char **argv){
 	glutDisplayFunc(DibujaEscena);
 	glutReshapeFunc(EscalaVentana);
 	glutKeyboardFunc(myKeyboard);
+	glutSpecialFunc(myKeyboardSpecial);
 	/*glutIdleFunc(MueveCuadrado);
 	glutKeyboardFunc(myKeyboard);
-	glutSpecialFunc(myKeyboardSpecial);
 	glutMouseFunc(myMouseClick);
 	glutMotionFunc(myMotion);*/
 	glutMainLoop();
