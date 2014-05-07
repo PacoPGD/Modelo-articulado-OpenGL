@@ -16,6 +16,23 @@ const int Z=2;
 const int D=3;
 */
 
+
+#define ROOT 0
+#define CUELLO 1
+#define CINTURA 2
+#define CABEZA 3
+#define HOMBRO_DER 4
+#define HOMBRO_IZQ 5
+#define CADERA_DER 6
+#define CADERA_IZQ 7
+#define MANO_DER 8
+#define MANO_IZQ 9
+#define RODILLA_DER 10
+#define RODILLA_IZQ 11
+#define TALON_DER 13
+#define TALON_IZQ 12
+
+
 class Vector3f{
 public:  
   float x;
@@ -60,6 +77,7 @@ public:
     root=root2;
     pos=pos2;
     limit=limit2;
+    angle=Vector3f(0,0,0);
  	}
  	
  	void set(int id2, int root2, Vector3f pos2, Vector3f limit2){
@@ -104,13 +122,9 @@ void init(){
   pos.set(20,20,0);
   limit.set(0,0,0);
   j.set(4,1,pos,limit);
-  /******************************/
-  //Rotando codo  
-  /*******************************/
-  Vector3f rot(45,45,45);
-  j.rotate(rot);
   joins.push_back(j);
   
+ 
   pos.set(-20,20,0);
   limit.set(0,0,0);
   j.set(5,1,pos,limit);
@@ -141,10 +155,17 @@ void init(){
   j.set(10,6,pos,limit);
   joins.push_back(j);
   
+  /******************************/
+  //Rotando
+  /*******************************/
+  Vector3f rot(0,0,45);
+  j.rotate(rot);
   pos.set(-20,-40,0);
   limit.set(0,0,0);
   j.set(11,7,pos,limit);
   joins.push_back(j);
+  j.rotate( Vector3f(0,0,0));
+  
   
   pos.set(20,-60,0);
   limit.set(0,0,0);
@@ -169,64 +190,153 @@ void move(int id, Vector3f giro){
   
 }
 
+
+void rotate(Vector3f rot){
+	if(rot.x>0){	glRotatef(rot.x,1,0,0);}
+	if(rot.y>0){	glRotatef(rot.y,0,1,0);}
+	if(rot.z>0){	glRotatef(rot.z,0,0,1); printf("->rotate\n");}
+}
+
 void dibujarEje(){
-  glColor3f(1.0f,0.0f,0.0f);
-  glVertex3f(0.0f,0.0f,0.0f);
-  glVertex3f(100.0f,0.0f,0.0f);
-  
-  glColor3f(0.0f,1.0f,0.0f);
-  glVertex3f(0.0f,0.0f,0.0f);
-  glVertex3f(0.0f,100.0f,0.0f);
-  
-  glColor3f(0.0f,0.0f,1.0f);
-  glVertex3f(0.0f,0.0f,0.0f);
-  glVertex3f(0.0f,0.0f,100.0f);
+		glLineWidth(1.0f);
+		glBegin(GL_LINES);
+			glColor3f(1.0f,0.0f,0.0f);
+			glVertex3f(0.0f,0.0f,0.0f);
+			glVertex3f(100.0f,0.0f,0.0f);
+		
+			glColor3f(0.0f,1.0f,0.0f);
+			glVertex3f(0.0f,0.0f,0.0f);
+			glVertex3f(0.0f,100.0f,0.0f);
+		
+			glColor3f(0.0f,0.0f,1.0f);
+			glVertex3f(0.0f,0.0f,0.0f);
+			glVertex3f(0.0f,0.0f,100.0f);
+			glLineWidth(3.0f);
+		glEnd();
+}
+
+void punto(int j){
+	glBegin(GL_POINTS);
+		glVertex3f(joins[j].pos.x,joins[j].pos.y, joins[j].pos.z);
+	glEnd();
+}
+
+void linea(int j){
+	glBegin(GL_LINES);
+		glVertex3f(joins[j].pos.x,joins[j].pos.y, joins[j].pos.z);
+		int r=joins[j].root;
+		glVertex3f(joins[r].pos.x,joins[r].pos.y, joins[r].pos.z);
+	glEnd();
 }
 
 void DibujaEscena(){
 		glClearColor(1.,1.,1.,1.);
 		glClear(GL_COLOR_BUFFER_BIT);
 		int currentRoot=0;
-
+		
     glMatrixMode(GL_MODELVIEW);
-    glColor3f(1,0,0);
     glLoadIdentity();
-    glPushMatrix();
-    glScalef(5.0f,1.0f,1.0f);
+		dibujarEje();
+    /*
+		glPushMatrix();
+    dibujarEje();
+    glLineWidth(3.0f);
+		glBegin(GL_LINES);
+				glVertex3f(0.0f,5.0f,0.0f);
+				glVertex3f(100.0f,5.0f,0.0f);
+		glEnd();
+		
     
-    glRotatef(45.0f,0,0,1);
-    glTranslatef(10.0f,0,0);
-    
-    glutWireCube(10.0);
+        glTranslatef(10 ,10, 10);
+        glRotatef(45,0,0,1);
+        glTranslatef(-10.0 ,-10.0,-10.0);
+				glBegin(GL_LINES);
+						glVertex3f(0.0f,0.0f,0.0f);
+						glVertex3f(100.0f,0.0f,0.0f);
+				glEnd();
+        //dibujarEje();
     glPopMatrix();
-
+    */
+    
+    glColor3f(1,0,0);
     glPointSize(10.0f);
-    glBegin(GL_POINTS);
-    glPushMatrix();
+    //glPushMatrix();
+    //glScalef(5.0f,1.0f,1.0f);
+    
+    //glRotatef(45.0f,0,0,1);
+    //glTranslatef(10.0f,0,0);
+    
+    //glutWireCube(10.0);
+    //glPopMatrix();
+
+
+    
+    /*glPushMatrix();
+    	printf("------------abro\n");
 			for(size_t i=0; i<joins.size(); ++i){
 				int newRoot=joins[i].root;
 				if(newRoot!=currentRoot){
+					printf("abro\n");
 		      glPushMatrix();
 				}
-				//glTranslatef(0,0,0);
-		    //glRotatef(45, 0, 0,1.0f);
-		    //glTranslatef(0,0,0);
-		    glVertex3f(joins[i].pos.x,joins[i].pos.y, joins[i].pos.z);
+				if(i==11){
+					printf("->%d<-",i);
+					glTranslatef(joins[newRoot].pos.x*(-1.0),joins[newRoot].pos.y*(-1.0), joins[newRoot].pos.z*(-1.0));
+		    	//rotate(joins[i].angle);
+		    	
+		    	glRotatef(45.0f,0,0,1);
+		    	glTranslatef(joins[newRoot].pos.x,joins[newRoot].pos.y, joins[newRoot].pos.z);
+		    }
+		    glBegin(GL_POINTS);
+		    	glVertex3f(joins[i].pos.x,joins[i].pos.y, joins[i].pos.z);
+		    glEnd();
+		    if(i>0){
+					glBegin(GL_LINES);
+						glVertex3f(joins[i].pos.x,joins[i].pos.y, joins[i].pos.z);
+						int r=joins[i].root;
+						glVertex3f(joins[r].pos.x,joins[r].pos.y, joins[r].pos.z);
+				  glEnd();
+		    }
 		    if(newRoot!=currentRoot){
 		      glPopMatrix();
+		      printf("cierro\n");
 		      currentRoot=newRoot;
 				}
 			}
+			printf("cierro---------\n");
+		glPopMatrix();*/
+		glLoadIdentity();
+	glPushMatrix();
+		punto(ROOT);
+		
+		//cuello
+		glPushMatrix();
+			glRotatef(20.0f,0,0,1);
+			punto(CUELLO);
+			linea(CUELLO);
+			//hombroDer
+			glPushMatrix();
+				//
+				//glTranslatef(joins[CUELLO].pos.x,joins[CUELLO].pos.y, joins[CUELLO].pos.z);
+				punto(HOMBRO_DER);
+				linea(HOMBRO_DER);
+				glPushMatrix();
+				        glTranslatef(joins[HOMBRO_DER].pos.x,joins[HOMBRO_DER].pos.y, joins[HOMBRO_DER].pos.z);
+								glRotatef(-45.0f,0,0,1);
+								glTranslatef(-joins[HOMBRO_DER].pos.x,-joins[HOMBRO_DER].pos.y, -joins[HOMBRO_DER].pos.z);
+					punto(MANO_DER);
+					linea(MANO_DER);
+				glPopMatrix();
+			glPopMatrix();
 		glPopMatrix();
-    glEnd();
+		
+		//cintura
+		glPushMatrix();
+			punto(CINTURA);
+			linea(CINTURA);
+		glPopMatrix();
+	glPopMatrix();
     
-    glBegin(GL_LINES);
-			for(size_t i=1; i<joins.size(); ++i){
-		    glVertex3f(joins[i].pos.x,joins[i].pos.y, joins[i].pos.z);
-		    int r=joins[i].root;
-		    glVertex3f(joins[r].pos.x,joins[r].pos.y, joins[r].pos.z);
-			}
-    glEnd();
     
 		glutSwapBuffers();
 		glFinish();
