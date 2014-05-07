@@ -17,7 +17,7 @@
 #include "esqueleto.hpp"
 
 Esqueleto e;
-
+GLdouble camX=0.0,camY=0.0,camZ=-200.0;
 
 
 
@@ -53,8 +53,14 @@ void DibujaEscena(){
 	glClearColor(1.,1.,1.,1.);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60, 1.0, 100.0, 500.0);
+	gluLookAt(camX, camY, camZ, 0, 0, 0, 0, 1.0, 0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	dibujarEje();
-    
   e.dibujar();
 
 	glutSwapBuffers();
@@ -90,26 +96,27 @@ void myKeyboard(unsigned char key,int x, int y){
 }
 
 void myKeyboardSpecial(int key,int x, int y){
-		switch(key){
-			case GLUT_KEY_LEFT:
-				eyeX-=10.0f;
-				break;
-			case GLUT_KEY_RIGHT:
-				eyeX+=10.0f;
-				break;
-			case GLUT_KEY_UP:
-				eyeY+=10.0f;
-				break;
-			case GLUT_KEY_DOWN:
-				eyeY-=10.0f;
-				break;
-			case GLUT_KEY_PAGE_DOWN:
-				eyeZ-=10.0f;
-				break;
-			case GLUT_KEY_PAGE_UP:
-				eyeZ+=10.0f;
-				break;
-		}
+	switch(key){
+		case GLUT_KEY_LEFT:
+		camX-=1.0f;
+		break;
+		case GLUT_KEY_RIGHT:
+		camX+=1.0f;
+		break;
+		case GLUT_KEY_UP:
+		camY+=1.0f;
+		break;
+		case GLUT_KEY_DOWN:
+		camY-=1.0f;
+		break;
+		case GLUT_KEY_PAGE_DOWN:
+		camZ-=1.0f;
+		break;
+		case GLUT_KEY_PAGE_UP:
+		camZ+=1.0f;
+		break;
+	}
+	glutPostRedisplay();
 }
 
 int main(int argcp, char **argv){
