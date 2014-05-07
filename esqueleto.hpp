@@ -1,6 +1,3 @@
-
-
-
 #define ROOT 0
 #define TORSO 1
 #define CUELLO 2
@@ -46,6 +43,42 @@ public:
     y=y2;
     z=z2;
   }
+
+  void devuelveMayor(Vector3f vectorA, Vector3f vectorB){
+		if(vectorA.x>=vectorB.x)
+			this->x=vectorA.x;
+		else
+			this->x=vectorB.x;
+
+		if(vectorA.y>=vectorB.y)
+			this->y=vectorA.y;
+		else
+			this->y=vectorB.y;
+
+		if(vectorA.z>=vectorB.z)
+			this->z=vectorA.z;
+		else
+			this->z=vectorB.z;
+  }
+	
+
+  void devuelveMenor(Vector3f vectorA, Vector3f vectorB){
+		if(vectorA.x<=vectorB.x)
+			this->x=vectorA.x;
+		else
+			this->x=vectorB.x;
+
+		if(vectorA.y<=vectorB.y)
+			this->y=vectorA.y;
+		else
+			this->y=vectorB.y;
+
+		if(vectorA.z<=vectorB.z)
+			this->z=vectorA.z;
+		else
+			this->z=vectorB.z;
+  }
+
 };
 
 class Join{
@@ -80,7 +113,10 @@ public:
  	}
  	
  	void rotate(Vector3f rot){
-    angle=rot;
+	 Vector3f rotacion;
+	 rotacion.devuelveMenor(topLimit,rot);
+	 rotacion.devuelveMayor(botLimit,rotacion);
+    angle=rotacion;
  	}
 };
 
@@ -158,14 +194,11 @@ public:
 		joins.push_back(j);
 		
 		//9
-		Vector3f rot(0,0,45);
-		j.rotate(rot);
 		pos.set(40,20,0);
 		topLimit.set(0,0,0);
 		botLimit.set(0,0,0);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
-		j.rotate(Vector3f(0,0,0));
 		
 		//10
 		pos.set(-40,20,0);
@@ -275,11 +308,8 @@ public:
 	void move(float x, float y, float z){
 		
 	}
-	
+
 	void dibujar(){
-	joins[TORSO].rotate(Vector3f(45,-45,0));
-	joins[CINTURA].rotate(Vector3f(45,45,0));
-	
 glMatrixMode(GL_MODELVIEW);
   glColor3f(1,0,0);
   glPointSize(10.0f);
@@ -288,6 +318,7 @@ glLoadIdentity();
 glPushMatrix();
 	glTranslatef(globalPos.x,globalPos.y,globalPos.z);
 	punto(ROOT);
+	rotate(ROOT);
 	//Torso
 	glPushMatrix();
 		punto(TORSO);
