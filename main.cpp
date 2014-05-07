@@ -25,13 +25,16 @@ const int D=3;
 #define HOMBRO_IZQ 5
 #define CADERA_DER 6
 #define CADERA_IZQ 7
-#define MANO_DER 8
-#define MANO_IZQ 9
-#define RODILLA_DER 10
-#define RODILLA_IZQ 11
-#define TALON_DER 13
-#define TALON_IZQ 12
-
+#define CODO_DER 8
+#define CODO_IZQ 9
+#define MANO_DER 10
+#define MANO_IZQ 11
+#define RODILLA_DER 12
+#define RODILLA_IZQ 13
+#define TALON_DER 14
+#define TALON_IZQ 15
+#define PIE_DER 16
+#define PIE_IZQ 17
 
 class Vector3f{
 public:  
@@ -63,7 +66,8 @@ class Join{
 public:
 	int id;
 	int root;
-	Vector3f limit;
+	Vector3f topLimit;
+	Vector3f botLimit;
 	Vector3f angle;
 	Vector3f pos;
 	
@@ -72,19 +76,21 @@ public:
     root=0;
 	}
 	
-	Join(int id2, int root2, Vector3f pos2, Vector3f limit2){
+	Join(int id2, int root2, Vector3f pos2, Vector3f topLimit2, Vector3f botLimit2){
     id=id2;
     root=root2;
     pos=pos2;
-    limit=limit2;
+    topLimit=topLimit2;
+    botLimit=botLimit2;
     angle=Vector3f(0,0,0);
  	}
  	
- 	void set(int id2, int root2, Vector3f pos2, Vector3f limit2){
+ 	void set(int id2, int root2, Vector3f pos2, Vector3f topLimit2, Vector3f botLimit2){
     id=id2;
     root=root2;
     pos=pos2;
-    limit=limit2;
+    topLimit=topLimit2;
+    botLimit=botLimit2;
  	}
  	
  	void rotate(Vector3f rot){
@@ -97,84 +103,121 @@ int hsize=500;
 std::vector<Join> joins;
 
 void init(){
-
-  
   Vector3f pos(0,0,0);
-  Vector3f limit;
-  Join j(0,0,pos,limit);
+  Vector3f topLimit(0,0,0);
+  Vector3f botLimit(0,0,0);
+  
+  Join j(ROOT,ROOT,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(0,20,0);
-  limit.set(0,0,0);
-  j.set(1,0,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CUELLO,ROOT,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(0,-20,0);
-  limit.set(0,0,0);
-  j.set(2,0,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CINTURA,ROOT,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(0,40,0);
-  limit.set(0,0,0);
-  j.set(3,1,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CABEZA,CUELLO,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(20,20,0);
-  limit.set(0,0,0);
-  j.set(4,1,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(HOMBRO_DER,CUELLO,pos,topLimit,botLimit);
   joins.push_back(j);
   
  
   pos.set(-20,20,0);
-  limit.set(0,0,0);
-  j.set(5,1,pos,limit);
+  topLimit.set(0,0,0);
+  j.set(HOMBRO_IZQ,CUELLO,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(20,-20,0);
-  limit.set(0,0,0);
-  j.set(6,2,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CADERA_DER,CINTURA,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(-20,-20,0);
-  limit.set(0,0,0);
-  j.set(7,2,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CADERA_IZQ,CINTURA,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(40,20,0);
-  limit.set(0,0,0);
-  j.set(8,4,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(-40,20,0);
-  limit.set(0,0,0);
-  j.set(9,5,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(CODO_IZQ,HOMBRO_IZQ,pos,topLimit,botLimit);
+  joins.push_back(j);
+  
+  pos.set(60,20,0);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(MANO_DER,CODO_DER,pos,topLimit,botLimit);
+  joins.push_back(j);
+  
+  pos.set(-60,20,0);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(MANO_IZQ,CODO_IZQ,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(20,-40,0);
-  limit.set(0,0,0);
-  j.set(10,6,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(RODILLA_DER,CADERA_DER,pos,topLimit,botLimit);
   joins.push_back(j);
   
-  /******************************/
-  //Rotando
+  /*******************************/
+  // Rotando
   /*******************************/
   Vector3f rot(0,0,45);
   j.rotate(rot);
   pos.set(-20,-40,0);
-  limit.set(0,0,0);
-  j.set(11,7,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(RODILLA_IZQ,CADERA_IZQ,pos,topLimit,botLimit);
   joins.push_back(j);
-  j.rotate( Vector3f(0,0,0));
+  j.rotate(Vector3f(0,0,0));
   
   
   pos.set(20,-60,0);
-  limit.set(0,0,0);
-  j.set(12,10,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(TALON_DER,RODILLA_DER,pos,topLimit,botLimit);
   joins.push_back(j);
   
   pos.set(-20,-60,0);
-  limit.set(0,0,0);
-  j.set(13,11,pos,limit);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(TALON_IZQ,RODILLA_IZQ,pos,topLimit,botLimit);
+  joins.push_back(j);
+  
+  
+  pos.set(40,-60,0);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(PIE_DER,TALON_DER,pos,topLimit,botLimit);
+  joins.push_back(j);
+  
+  pos.set(-40,-60,0);
+  topLimit.set(0,0,0);
+  botLimit.set(0,0,0);
+  j.set(PIE_IZQ,TALON_IZQ,pos,topLimit,botLimit);
   joins.push_back(j);
 }
 
@@ -191,10 +234,15 @@ void move(int id, Vector3f giro){
 }
 
 
-void rotate(Vector3f rot){
-	if(rot.x>0){	glRotatef(rot.x,1,0,0);}
-	if(rot.y>0){	glRotatef(rot.y,0,1,0);}
-	if(rot.z>0){	glRotatef(rot.z,0,0,1); printf("->rotate\n");}
+void rotate(int id){
+	Join j=joins[id];
+	int root=j.root;
+  glTranslatef(joins[root].pos.x,joins[root].pos.y, joins[root].pos.z);
+	//glRotatef(-45.0f,0,0,1);
+	if(j.angle.x>0){	glRotatef(j.angle.x,1,0,0);}
+	if(j.angle.y>0){	glRotatef(j.angle.y,0,1,0);}
+	if(j.angle.z>0){	glRotatef(j.angle.z,0,0,1);}
+	glTranslatef(-joins[root].pos.x,-joins[root].pos.y, -joins[root].pos.z);
 }
 
 void dibujarEje(){
@@ -230,13 +278,13 @@ void linea(int j){
 }
 
 void DibujaEscena(){
-		glClearColor(1.,1.,1.,1.);
-		glClear(GL_COLOR_BUFFER_BIT);
-		int currentRoot=0;
-		
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-		dibujarEje();
+	glClearColor(1.,1.,1.,1.);
+	glClear(GL_COLOR_BUFFER_BIT);
+	int currentRoot=0;
+	
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+	dibujarEje();
     /*
 		glPushMatrix();
     dibujarEje();
@@ -305,41 +353,102 @@ void DibujaEscena(){
 			}
 			printf("cierro---------\n");
 		glPopMatrix();*/
-		glLoadIdentity();
+	glLoadIdentity();
 	glPushMatrix();
 		punto(ROOT);
-		
 		//cuello
 		glPushMatrix();
 			glRotatef(20.0f,0,0,1);
 			punto(CUELLO);
 			linea(CUELLO);
+			//cabeza
+			glPushMatrix();
+				punto(CABEZA);
+				linea(CABEZA);
+			glPopMatrix();
 			//hombroDer
 			glPushMatrix();
-				//
-				//glTranslatef(joins[CUELLO].pos.x,joins[CUELLO].pos.y, joins[CUELLO].pos.z);
 				punto(HOMBRO_DER);
 				linea(HOMBRO_DER);
+				//manoDer
 				glPushMatrix();
-				        glTranslatef(joins[HOMBRO_DER].pos.x,joins[HOMBRO_DER].pos.y, joins[HOMBRO_DER].pos.z);
-								glRotatef(-45.0f,0,0,1);
-								glTranslatef(-joins[HOMBRO_DER].pos.x,-joins[HOMBRO_DER].pos.y, -joins[HOMBRO_DER].pos.z);
-					punto(MANO_DER);
-					linea(MANO_DER);
+	        glTranslatef(joins[HOMBRO_DER].pos.x,joins[HOMBRO_DER].pos.y, joins[HOMBRO_DER].pos.z);
+					glRotatef(-45.0f,0,0,1);
+					glTranslatef(-joins[HOMBRO_DER].pos.x,-joins[HOMBRO_DER].pos.y, -joins[HOMBRO_DER].pos.z);
+					punto(CODO_DER);
+					linea(CODO_DER);
+					glPushMatrix();
+						punto(MANO_DER);
+						linea(MANO_DER);
+					glPopMatrix();
+				glPopMatrix();
+				//hombroIzq
+				glPushMatrix();
+				punto(HOMBRO_IZQ);
+				linea(HOMBRO_IZQ);
+					//codoIzq
+					glPushMatrix();
+						punto(CODO_IZQ);
+						linea(CODO_IZQ);
+						//manoIzq
+						glPushMatrix();
+							punto(MANO_IZQ);
+							linea(MANO_IZQ);
+						glPopMatrix();
+					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
 		glPopMatrix();
-		
 		//cintura
 		glPushMatrix();
 			punto(CINTURA);
 			linea(CINTURA);
+			//caderaDer
+			glPushMatrix();
+				punto(CADERA_DER);
+				linea(CADERA_DER);
+				//rodillaDer
+				glPushMatrix();
+					punto(RODILLA_DER);
+					linea(RODILLA_DER);
+					//talonDer
+					glPushMatrix();
+						punto(TALON_DER);
+						linea(TALON_DER);
+						//pieDer
+						glPushMatrix();
+							punto(PIE_DER);
+							linea(PIE_DER);
+						glPopMatrix();
+					glPopMatrix();
+				glPopMatrix();
+			glPopMatrix();
+			//caderaIzq
+			glPushMatrix();
+				punto(CADERA_IZQ);
+				linea(CADERA_IZQ);
+				//rodillaIzq
+				glPushMatrix();
+					punto(RODILLA_IZQ);
+					linea(RODILLA_IZQ);
+					//talonIzq
+					glPushMatrix();
+						punto(TALON_IZQ);
+						linea(TALON_IZQ);
+						//pideIzq
+						glPushMatrix();
+							punto(PIE_IZQ);
+							linea(PIE_IZQ);
+						glPopMatrix();
+					glPopMatrix();
+				glPopMatrix();
+			glPopMatrix();
 		glPopMatrix();
 	glPopMatrix();
     
     
-		glutSwapBuffers();
-		glFinish();
+	glutSwapBuffers();
+	glFinish();
 }
 
 void EscalaVentana(GLsizei w, GLsizei h){
@@ -353,7 +462,7 @@ void EscalaVentana(GLsizei w, GLsizei h){
 	GLdouble  zNear=100.0;
 	GLdouble  zFar=500.0;
 	gluPerspective(  fovy,    aspect,    zNear,    zFar);
-	GLdouble eyeX=0;
+	GLdouble eyeX=100;
 	GLdouble eyeY=0;
 	GLdouble eyeZ=-200.0f;
 	GLdouble centerX=0;
