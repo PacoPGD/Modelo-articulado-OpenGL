@@ -88,8 +88,10 @@ public:
 class Esqueleto{
 public:
 	std::vector<Join> joins;
+	Vector3f globalPos;
 	
-	Esqueleto(){}
+	Esqueleto(){
+	}
 	
 	void init(){
 		Vector3f pos(0,0,0);
@@ -156,11 +158,14 @@ public:
 		joins.push_back(j);
 		
 		//9
+		Vector3f rot(0,0,45);
+		j.rotate(rot);
 		pos.set(40,20,0);
 		topLimit.set(0,0,0);
 		botLimit.set(0,0,0);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
+		j.rotate(Vector3f(0,0,0));
 		
 		//10
 		pos.set(-40,20,0);
@@ -205,17 +210,11 @@ public:
 		joins.push_back(j);
 		
 		//16
-		/*******************************/
-		// Rotando
-		/*******************************/
-		Vector3f rot(0,0,45);
-		j.rotate(rot);
 		pos.set(-20,-40,0);
 		topLimit.set(0,0,0);
 		botLimit.set(0,0,0);
 		j.set(RODILLA_IZQ,CADERA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
-		j.rotate(Vector3f(0,0,0));
 		
 		//17
 		pos.set(20,-60,0);
@@ -250,12 +249,12 @@ public:
 	void rotate(int id){
 		Join j=joins[id];
 		int root=j.root;
-		glTranslatef(joins[root].pos.x,joins[root].pos.y, joins[root].pos.z);
+		glTranslatef(joins[id].pos.x,joins[id].pos.y, joins[id].pos.z);
 		//glRotatef(-45.0f,0,0,1);
 		if(j.angle.x>0){	glRotatef(j.angle.x,1,0,0);}
 		if(j.angle.y>0){	glRotatef(j.angle.y,0,1,0);}
 		if(j.angle.z>0){	glRotatef(j.angle.z,0,0,1);}
-		glTranslatef(-joins[root].pos.x,-joins[root].pos.y, -joins[root].pos.z);
+		glTranslatef(-joins[id].pos.x,-joins[id].pos.y, -joins[id].pos.z);
 	}
 
 
@@ -273,47 +272,62 @@ public:
 		glEnd();
 	}
 	
+	void move(float x, float y, float z){
+		
+	}
+	
 	void dibujar(){
+	joins[TORSO].rotate(Vector3f(45,-45,0));
+	joins[CINTURA].rotate(Vector3f(45,45,0));
+	
 glMatrixMode(GL_MODELVIEW);
   glColor3f(1,0,0);
   glPointSize(10.0f);
 glLoadIdentity();
+//		glRotatef(20.0f,0,0,1);
 glPushMatrix();
+	glTranslatef(globalPos.x,globalPos.y,globalPos.z);
 	punto(ROOT);
 	//Torso
 	glPushMatrix();
-		glRotatef(20.0f,0,0,1);
 		punto(TORSO);
 		linea(TORSO);
+		rotate(TORSO);
 		//cuello
 		glPushMatrix();
 			punto(CUELLO);
 			linea(CUELLO);
+			rotate(CUELLO);
 			//cabeza
 			glPushMatrix();
 				punto(CABEZA);
 				linea(CABEZA);
+				rotate(CABEZA);
 			glPopMatrix();
 		glPopMatrix();
 		//hombroDer
 		glPushMatrix();
 			punto(HOMBRO_DER);
 			linea(HOMBRO_DER);
+			rotate(HOMBRO_DER);
 			//codoDer
 			glPushMatrix();
-        glTranslatef(joins[HOMBRO_DER].pos.x,joins[HOMBRO_DER].pos.y, joins[HOMBRO_DER].pos.z);
+        /*glTranslatef(joins[HOMBRO_DER].pos.x,joins[HOMBRO_DER].pos.y, joins[HOMBRO_DER].pos.z);
 				glRotatef(-45.0f,0,0,1);
-				glTranslatef(-joins[HOMBRO_DER].pos.x,-joins[HOMBRO_DER].pos.y, -joins[HOMBRO_DER].pos.z);
+				glTranslatef(-joins[HOMBRO_DER].pos.x,-joins[HOMBRO_DER].pos.y, -joins[HOMBRO_DER].pos.z);*/
 				punto(CODO_DER);
 				linea(CODO_DER);
+				rotate(CODO_DER);
 				//munecaDer
 				glPushMatrix();
 					punto(MUNECA_DER);
 					linea(MUNECA_DER);
+					rotate(MUNECA_DER);
 					//manoDer
 					glPushMatrix();
 						punto(MANO_DER);
 						linea(MANO_DER);
+						rotate(MANO_DER);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
@@ -321,18 +335,22 @@ glPushMatrix();
 			glPushMatrix();
 			punto(HOMBRO_IZQ);
 			linea(HOMBRO_IZQ);
+			rotate(HOMBRO_IZQ);
 				//codoIzq
 				glPushMatrix();
 					punto(CODO_IZQ);
 					linea(CODO_IZQ);
+					rotate(CODO_IZQ);
 					//munecaIzq
 					glPushMatrix();
 						punto(MUNECA_IZQ);
 						linea(MUNECA_IZQ);
+						rotate(MUNECA_IZQ);
 						//manoIzq
 						glPushMatrix();
 							punto(MANO_IZQ);
 							linea(MANO_IZQ);
+							rotate(MANO_IZQ);
 						glPopMatrix();
 					glPopMatrix();
 				glPopMatrix();
@@ -343,22 +361,27 @@ glPushMatrix();
 	glPushMatrix();
 		punto(CINTURA);
 		linea(CINTURA);
+		rotate(CINTURA);
 		//caderaDer
 		glPushMatrix();
 			punto(CADERA_DER);
 			linea(CADERA_DER);
+			rotate(CADERA_DER);
 			//rodillaDer
 			glPushMatrix();
 				punto(RODILLA_DER);
 				linea(RODILLA_DER);
+				rotate(RODILLA_DER);
 				//talonDer
 				glPushMatrix();
 					punto(TALON_DER);
 					linea(TALON_DER);
+					rotate(TALON_DER);
 					//pieDer
 					glPushMatrix();
 						punto(PIE_DER);
 						linea(PIE_DER);
+						rotate(PIE_DER);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
@@ -367,18 +390,22 @@ glPushMatrix();
 		glPushMatrix();
 			punto(CADERA_IZQ);
 			linea(CADERA_IZQ);
+			rotate(CADERA_IZQ);
 			//rodillaIzq
 			glPushMatrix();
 				punto(RODILLA_IZQ);
 				linea(RODILLA_IZQ);
+				rotate(RODILLA_IZQ);
 				//talonIzq
 				glPushMatrix();
 					punto(TALON_IZQ);
 					linea(TALON_IZQ);
+					rotate(TALON_IZQ);
 					//pideIzq
 					glPushMatrix();
 						punto(PIE_IZQ);
 						linea(PIE_IZQ);
+						rotate(PIE_IZQ);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
