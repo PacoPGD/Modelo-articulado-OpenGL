@@ -125,8 +125,10 @@ class Esqueleto{
 public:
 	std::vector<Join> joins;
 	Vector3f globalPos;
-	
+	int joinSelect;
+
 	Esqueleto(){
+		joinSelect=0;
 	}
 	
 	void init(){
@@ -293,7 +295,10 @@ public:
 
 	void punto(int j){
 		glBegin(GL_POINTS);
+			if(j==joinSelect)
+				glColor3f(0.0f,1.0f,0.0f);
 			glVertex3f(joins[j].pos.x,joins[j].pos.y, joins[j].pos.z);
+			glColor3f(1.0f,0.0f,0.0f);
 		glEnd();
 	}
 
