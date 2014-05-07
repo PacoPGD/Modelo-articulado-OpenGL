@@ -9,6 +9,7 @@
 #include <math.h>
 #include <time.h>
 //g++ -o ejecutable main.cpp -lGL -lglut -lGLU
+//g++ -o ejecutable main.cpp -lGL -lglut -lGLU -L/usr/X11R6/lib -L/usr/local/lib
 /*
 const int X=0;
 const int Y=1;
