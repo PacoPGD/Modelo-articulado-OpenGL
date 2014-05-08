@@ -89,6 +89,10 @@ void EscalaVentana(GLsizei w, GLsizei h){
 }
 
 void myKeyboard(unsigned char key,int x, int y){
+
+	Vector3f aux;
+	aux = e.joins[e.joinSelect].angle;
+
 	switch(key){
 		case 'o':
 			if(e.joinSelect<e.joins.size()-1)
@@ -103,7 +107,28 @@ void myKeyboard(unsigned char key,int x, int y){
 			}
 		break;
 
+		case 'a':
+			aux.y++;
+		break;
+		case 'd':
+			aux.y--;
+		break;
+		case 'w':
+			aux.x++;
+		break;
+		case 's':
+			aux.x--;
+		break;
+		case 'e':
+			aux.z++;
+		break;
+		case 'q':
+			aux.z--;
+		break;
 	}
+
+	e.joins[e.joinSelect].rotate(aux);
+
 	glutPostRedisplay();
 }
 

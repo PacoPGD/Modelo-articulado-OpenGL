@@ -46,37 +46,37 @@ public:
 
   void devuelveMayor(Vector3f vectorA, Vector3f vectorB){
 		if(vectorA.x>=vectorB.x)
-			this->x=vectorA.x;
+			x=vectorA.x;
 		else
-			this->x=vectorB.x;
+			x=vectorB.x;
 
 		if(vectorA.y>=vectorB.y)
-			this->y=vectorA.y;
+			y=vectorA.y;
 		else
-			this->y=vectorB.y;
+			y=vectorB.y;
 
 		if(vectorA.z>=vectorB.z)
-			this->z=vectorA.z;
+			z=vectorA.z;
 		else
-			this->z=vectorB.z;
+			z=vectorB.z;
   }
 	
 
   void devuelveMenor(Vector3f vectorA, Vector3f vectorB){
 		if(vectorA.x<=vectorB.x)
-			this->x=vectorA.x;
+			x=vectorA.x;
 		else
-			this->x=vectorB.x;
+			x=vectorB.x;
 
 		if(vectorA.y<=vectorB.y)
-			this->y=vectorA.y;
+			y=vectorA.y;
 		else
-			this->y=vectorB.y;
+			y=vectorB.y;
 
 		if(vectorA.z<=vectorB.z)
-			this->z=vectorA.z;
+			z=vectorA.z;
 		else
-			this->z=vectorB.z;
+			z=vectorB.z;
   }
 
 };
@@ -117,6 +117,8 @@ public:
 	 rotacion.devuelveMenor(topLimit,rot);
 	 rotacion.devuelveMayor(botLimit,rotacion);
     angle=rotacion;
+
+	 printf("AngleX=%f AngleY=%f AngleZ=%f\n",angle.x,angle.y,angle.z);
  	}
 };
 
@@ -133,8 +135,8 @@ public:
 	
 	void init(){
 		Vector3f pos(0,0,0);
-		Vector3f topLimit(0,0,0);
-		Vector3f botLimit(0,0,0);
+		Vector3f topLimit(360,360,360);
+		Vector3f botLimit(-360,-360,-360);
 		
 		//0
 		Join j(ROOT,ROOT,pos,topLimit,botLimit);
@@ -142,140 +144,141 @@ public:
 		
 		//1
 		pos.set(0,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(TORSO,ROOT,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//2
 		pos.set(0,40,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CUELLO,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//3
 		pos.set(0,-20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CINTURA,ROOT,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//4
 		pos.set(0,60,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CABEZA,CUELLO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//5
 		pos.set(20,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(HOMBRO_DER,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 	 	//6
 		pos.set(-20,20,0);
-		topLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(HOMBRO_IZQ,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//7
 		pos.set(20,-20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CADERA_DER,CINTURA,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//8
 		pos.set(-20,-20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CADERA_IZQ,CINTURA,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//9
 		pos.set(40,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//10
 		pos.set(-40,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(CODO_IZQ,HOMBRO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//11
 		pos.set(60,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(MUNECA_DER,CODO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//12
 		pos.set(-60,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(MUNECA_IZQ,CODO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//13
 		pos.set(80,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(MANO_DER,MUNECA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//14
 		pos.set(-80,20,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(MANO_IZQ,MUNECA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//15
 		pos.set(20,-40,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(RODILLA_DER,CADERA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//16
 		pos.set(-20,-40,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(RODILLA_IZQ,CADERA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//17
 		pos.set(20,-60,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);;
 		j.set(TALON_DER,RODILLA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//18
 		pos.set(-20,-60,0);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);;
 		j.set(TALON_IZQ,RODILLA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//19
 		pos.set(20,-60,-20);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(PIE_DER,TALON_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//20
 		pos.set(-20,-60,-20);
-		topLimit.set(0,0,0);
-		botLimit.set(0,0,0);
+		topLimit.set(360,360,360);
+		botLimit.set(-360,-360,-360);
 		j.set(PIE_IZQ,TALON_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 	}
