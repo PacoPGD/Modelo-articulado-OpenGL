@@ -61,7 +61,7 @@ void DibujaEscena(){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	dibujarEje();
-  e.dibujar();
+   e.dibujar();
 
 	glutSwapBuffers();
 	glFinish();
@@ -99,12 +99,16 @@ void myKeyboard(unsigned char key,int x, int y){
 			{
 				e.joinSelect++;
 			}
+			else
+				e.joinSelect=0;
 		break;
 		case 'l':
 			if(e.joinSelect>0)
 			{
 				e.joinSelect--;
 			}
+			else
+				e.joinSelect=e.joins.size()-1;
 		break;
 
 		case 'a':

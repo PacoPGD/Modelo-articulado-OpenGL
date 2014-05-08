@@ -144,22 +144,24 @@ public:
 		
 		//1
 		pos.set(0,20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(0,90,40);
+		botLimit.set(-0,-90,-40);
 		j.set(TORSO,ROOT,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
+		
 		//2
 		pos.set(0,40,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(20,0,30);
+		botLimit.set(-60,-0,-30);
 		j.set(CUELLO,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
-		
+
+	
 		//3
 		pos.set(0,-20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(30,20,10);
+		botLimit.set(-30,-20,-10);
 		j.set(CINTURA,ROOT,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
@@ -170,7 +172,7 @@ public:
 		j.set(CABEZA,CUELLO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
-		//5
+		//5 ESTE NODO FALLA AL ROTAR Y NO SE PORQUE
 		pos.set(20,20,0);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
@@ -179,53 +181,53 @@ public:
 		
 	 	//6
 		pos.set(-20,20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(0,60,80);
+		botLimit.set(-0,-120,-90);
 		j.set(HOMBRO_IZQ,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//7
 		pos.set(20,-20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(50,10,0);
+		botLimit.set(-30,-10,-0);
 		j.set(CADERA_DER,CINTURA,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//8
 		pos.set(-20,-20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(50,10,0);
+		botLimit.set(-30,-10,-0);
 		j.set(CADERA_IZQ,CINTURA,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//9
 		pos.set(40,20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(0,0,140);
+		botLimit.set(-0,-0,-0);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//10
 		pos.set(-40,20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(0,0,140);
+		botLimit.set(-0,-0,-0);
 		j.set(CODO_IZQ,HOMBRO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//11
 		pos.set(60,20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(360,30,50);
+		botLimit.set(-360,-30,-50);
 		j.set(MUNECA_DER,CODO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//12
 		pos.set(-60,20,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(360,30,50);
+		botLimit.set(-360,-30,-50);
 		j.set(MUNECA_IZQ,CODO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
-		
+
 		//13
 		pos.set(80,20,0);
 		topLimit.set(360,360,360);
@@ -242,29 +244,29 @@ public:
 		
 		//15
 		pos.set(20,-40,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(0,0,0);
+		botLimit.set(-60,-0,-0);
 		j.set(RODILLA_DER,CADERA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//16
 		pos.set(-20,-40,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);
+		topLimit.set(0,0,0);
+		botLimit.set(-60,-0,-0);
 		j.set(RODILLA_IZQ,CADERA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//17
 		pos.set(20,-60,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);;
+		topLimit.set(0,0,0);
+		botLimit.set(-0,-0,-0);
 		j.set(TALON_DER,RODILLA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//18
 		pos.set(-20,-60,0);
-		topLimit.set(360,360,360);
-		botLimit.set(-360,-360,-360);;
+		topLimit.set(0,0,0);
+		botLimit.set(-0,-0,-0);
 		j.set(TALON_IZQ,RODILLA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
@@ -288,10 +290,11 @@ public:
 		Join j=joins[id];
 		int root=j.root;
 		glTranslatef(joins[id].pos.x,joins[id].pos.y, joins[id].pos.z);
-		//glRotatef(-45.0f,0,0,1);
-		if(j.angle.x>0){	glRotatef(j.angle.x,1,0,0);}
-		if(j.angle.y>0){	glRotatef(j.angle.y,0,1,0);}
-		if(j.angle.z>0){	glRotatef(j.angle.z,0,0,1);}
+
+		glRotatef(j.angle.x,1,0,0);
+		glRotatef(j.angle.y,0,1,0);
+		glRotatef(j.angle.z,0,0,1);
+
 		glTranslatef(-joins[id].pos.x,-joins[id].pos.y, -joins[id].pos.z);
 	}
 
