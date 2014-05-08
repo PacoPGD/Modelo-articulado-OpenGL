@@ -17,7 +17,7 @@
 #include "esqueleto.hpp"
 
 Esqueleto e;
-GLdouble camX=0.0,camY=0.0,camZ=-200.0;
+GLdouble camX=0.0, camY=0.0, camZ=-200.0;
 
 
 
@@ -61,7 +61,7 @@ void DibujaEscena(){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	dibujarEje();
-   e.dibujar();
+  e.dibujar();
 
 	glutSwapBuffers();
 	glFinish();
@@ -85,53 +85,54 @@ void EscalaVentana(GLsizei w, GLsizei h){
 	GLdouble upY=1.0f;
 	GLdouble upZ=0;
 	gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
-	//glOrtho(-100.0f, 100.0f, -100.0f, 100.0f, -50.0, 50.0);
 }
 
 void myKeyboard(unsigned char key,int x, int y){
-
 	Vector3f aux;
 	aux = e.joins[e.joinSelect].angle;
-
 	switch(key){
 		case 'o':
-			if(e.joinSelect<e.joins.size()-1)
-			{
+			if(e.joinSelect<e.joins.size()-1){
 				e.joinSelect++;
 			}
-			else
+			else{
 				e.joinSelect=0;
+			}
 		break;
 		case 'l':
-			if(e.joinSelect>0)
-			{
+			if(e.joinSelect>0){
 				e.joinSelect--;
 			}
-			else
+			else{
 				e.joinSelect=e.joins.size()-1;
+			}
 		break;
 
 		case 'a':
 			aux.y++;
+			e.joins[e.joinSelect].rotate(aux);
 		break;
 		case 'd':
 			aux.y--;
+			e.joins[e.joinSelect].rotate(aux);
 		break;
 		case 'w':
 			aux.x++;
+			e.joins[e.joinSelect].rotate(aux);
 		break;
 		case 's':
 			aux.x--;
+			e.joins[e.joinSelect].rotate(aux);
 		break;
 		case 'e':
 			aux.z++;
+			e.joins[e.joinSelect].rotate(aux);
 		break;
 		case 'q':
 			aux.z--;
+			e.joins[e.joinSelect].rotate(aux);
 		break;
 	}
-
-	e.joins[e.joinSelect].rotate(aux);
 
 	glutPostRedisplay();
 }
