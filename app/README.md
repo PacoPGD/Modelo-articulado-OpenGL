@@ -1,0 +1,1 @@
+Modelo articulado en openGL
