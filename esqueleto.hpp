@@ -20,6 +20,9 @@
 #define PIE_DER 19
 #define PIE_IZQ 20
 
+
+#include "glm.cpp"
+
 class Vector3f{
 public:  
   float x;
@@ -128,12 +131,17 @@ public:
 	std::vector<Join> joins;
 	Vector3f globalPos;
 	int joinSelect;
+	GLMmodel* model;
 
 	Esqueleto(){
 		joinSelect=0;
 	}
 	
 	void init(){
+		model = (GLMmodel*)malloc(sizeof(GLMmodel));
+		model = glmReadOBJ("Cybermen/Cyberman.obj");
+	
+	
 		Vector3f pos(0,0,0);
 		Vector3f topLimit(360,360,360);
 		Vector3f botLimit(-360,-360,-360);
@@ -283,6 +291,13 @@ public:
 		botLimit.set(-360,-360,-360);
 		j.set(PIE_IZQ,TALON_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
+		
+		
+		asignarPuntos();
+	}
+	
+	void asignarPuntos(){
+	
 	}
 
 
@@ -316,14 +331,46 @@ public:
 		glEnd();
 	}
 	
+	void dibujarVertices(int id){
+		static GLuint i;
+		static GLMgroup* group;
+		static GLMtriangle* triangle;
+		static GLMmaterial* material;
+		group = model->groups;
+		if(id==100){
+    glBegin(GL_TRIANGLES);
+    for (i = 0; i < group->numtriangles; i++) {
+      triangle = &T(group->triangles[i]);
+			glNormal3fv(&model->normals[3 * triangle->nindices[0]]);
+			glNormal3fv(&model->normals[3 * triangle->nindices[1]]);
+			glNormal3fv(&model->normals[3 * triangle->nindices[2]]);
+    }
+    glEnd();
+    }
+	}	
+
 	void move(float x, float y, float z){
 		globalPos.x=x;
 		globalPos.y=y;
 		globalPos.z=z;
 	}
+	
+	
+
 
 	void dibujar(){
-glMatrixMode(GL_MODELVIEW);
+		glMatrixMode(GL_MODELVIEW);
+		
+	
+		glColor3f(0.5f,0.5f,0.5f);
+		glLoadIdentity();
+		glScalef(0.8f,0.8f,0.8f);
+		glTranslatef(0.0f,-90.0f,0.0f);
+		glRotatef(180.0f,0,1,0);
+		glmDraw(model, GLM_FLAT);	
+		//dibujarVertices(100);
+
+
   glColor3f(1,0,0);
   glPointSize(10.0f);
 glLoadIdentity();
@@ -333,16 +380,19 @@ glPushMatrix();
 	rotate(ROOT);
 	//Torso
 	glPushMatrix();
+		dibujarVertices(TORSO);
 		punto(TORSO);
 		linea(TORSO);
 		rotate(TORSO);
 		//cuello
 		glPushMatrix();
+			dibujarVertices(CUELLO);
 			punto(CUELLO);
 			linea(CUELLO);
 			rotate(CUELLO);
 			//cabeza
 			glPushMatrix();
+				dibujarVertices(CABEZA);
 				punto(CABEZA);
 				linea(CABEZA);
 				rotate(CABEZA);
@@ -350,21 +400,25 @@ glPushMatrix();
 		glPopMatrix();
 		//hombroDer
 		glPushMatrix();
+			dibujarVertices(HOMBRO_DER);
 			punto(HOMBRO_DER);
 			linea(HOMBRO_DER);
 			rotate(HOMBRO_DER);
 			//codoDer
 			glPushMatrix();
+				dibujarVertices(CODO_DER);
 				punto(CODO_DER);
 				linea(CODO_DER);
 				rotate(CODO_DER);
 				//munecaDer
 				glPushMatrix();
+					dibujarVertices(MUNECA_DER);
 					punto(MUNECA_DER);
 					linea(MUNECA_DER);
 					rotate(MUNECA_DER);
 					//manoDer
 					glPushMatrix();
+						dibujarVertices(MANO_DER);
 						punto(MANO_DER);
 						linea(MANO_DER);
 						rotate(MANO_DER);
@@ -374,21 +428,25 @@ glPushMatrix();
 		glPopMatrix();
 		//hombroIzq
 		glPushMatrix();
-		punto(HOMBRO_IZQ);
-		linea(HOMBRO_IZQ);
-		rotate(HOMBRO_IZQ);
+			dibujarVertices(HOMBRO_IZQ);
+			punto(HOMBRO_IZQ);
+			linea(HOMBRO_IZQ);
+			rotate(HOMBRO_IZQ);
 			//codoIzq
 			glPushMatrix();
+				dibujarVertices(CODO_IZQ);
 				punto(CODO_IZQ);
 				linea(CODO_IZQ);
 				rotate(CODO_IZQ);
 				//munecaIzq
 				glPushMatrix();
+					dibujarVertices(MUNECA_IZQ);
 					punto(MUNECA_IZQ);
 					linea(MUNECA_IZQ);
 					rotate(MUNECA_IZQ);
 					//manoIzq
 					glPushMatrix();
+						dibujarVertices(MANO_IZQ);
 						punto(MANO_IZQ);
 						linea(MANO_IZQ);
 						rotate(MANO_IZQ);
@@ -399,26 +457,31 @@ glPushMatrix();
 	glPopMatrix();
 	//cintura
 	glPushMatrix();
+		dibujarVertices(CINTURA);
 		punto(CINTURA);
 		linea(CINTURA);
 		rotate(CINTURA);
 		//caderaDer
 		glPushMatrix();
+			dibujarVertices(CADERA_DER);
 			punto(CADERA_DER);
 			linea(CADERA_DER);
 			rotate(CADERA_DER);
 			//rodillaDer
 			glPushMatrix();
+				dibujarVertices(RODILLA_DER);
 				punto(RODILLA_DER);
 				linea(RODILLA_DER);
 				rotate(RODILLA_DER);
 				//talonDer
 				glPushMatrix();
+					dibujarVertices(TALON_DER);
 					punto(TALON_DER);
 					linea(TALON_DER);
 					rotate(TALON_DER);
 					//pieDer
 					glPushMatrix();
+						dibujarVertices(PIE_DER);
 						punto(PIE_DER);
 						linea(PIE_DER);
 						rotate(PIE_DER);
@@ -428,21 +491,25 @@ glPushMatrix();
 		glPopMatrix();
 		//caderaIzq
 		glPushMatrix();
+			dibujarVertices(CADERA_IZQ);
 			punto(CADERA_IZQ);
 			linea(CADERA_IZQ);
 			rotate(CADERA_IZQ);
 			//rodillaIzq
 			glPushMatrix();
+				dibujarVertices(RODILLA_IZQ);
 				punto(RODILLA_IZQ);
 				linea(RODILLA_IZQ);
 				rotate(RODILLA_IZQ);
 				//talonIzq
 				glPushMatrix();
+					dibujarVertices(TALON_IZQ);
 					punto(TALON_IZQ);
 					linea(TALON_IZQ);
 					rotate(TALON_IZQ);
 					//pideIzq
 					glPushMatrix();
+						dibujarVertices(PIE_IZQ);
 						punto(PIE_IZQ);
 						linea(PIE_IZQ);
 						rotate(PIE_IZQ);
@@ -454,4 +521,3 @@ glPushMatrix();
 glPopMatrix();
 	}
 };
-
