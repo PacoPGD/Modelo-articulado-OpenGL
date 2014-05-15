@@ -15,7 +15,7 @@
 #include <time.h>
 //#include "obj.h"
 //#include "matrix3d.h"
-#include "glm.cpp"
+
 
 #include "esqueleto.hpp"
 
@@ -26,8 +26,6 @@
 Esqueleto e;
 GLdouble camX=0.0, camY=0.0, camZ=-200.0;
 
-//OBJ object;
-GLMmodel* model;
 
 /********************************************************************/
 int hsize=500;
@@ -67,21 +65,13 @@ void DibujaEscena(){
 	glMatrixMode(GL_MODELVIEW);
 	
 	
-	for(int i=1;i<=model->numvertices;i++){
+	/*for(int i=1;i<=model->numvertices;i++){
   	printf("%f \n",model->vertices[3*i+0]);
   	model->vertices[3*i+0]+=10.0f;
   	model->vertices[3*i+1]+=10.0f;
   	model->vertices[3*i+2]-=1.0f;
-  }
+  }*/
   	
-	
-  glColor3f(0.5f,0.5f,0.5f);
-  glLoadIdentity();
-  glScalef(0.8f,0.8f,0.8f);
-  glTranslatef(0.0f,-90.0f,0.0f);
-  glRotatef(180.0f,0,1,0);
-  glmDraw(model, GLM_SMOOTH);	
-	
 	glLoadIdentity();
 	dibujarEje();
   e.dibujar();
@@ -204,8 +194,7 @@ int main(int argcp, char **argv){
   e.init();
   glutInit(&argcp,argv);
   
-  	model = (GLMmodel*)malloc(sizeof(GLMmodel));
-	model = glmReadOBJ("Cybermen/Cyberman.obj");
+
 	
   
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -231,4 +220,3 @@ int main(int argcp, char **argv){
 	glutMotionFunc(myMotion);*/
 	glutMainLoop();
 }
-
