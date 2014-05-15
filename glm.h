@@ -1,9 +1,7 @@
-#ifndef GLM_H
-#define GLM_H
 /*    
       glm.h
-      Nate Robins, 1997, 2000
-      nate@pobox.com, http://www.pobox.com/~nate
+      Nate Robins, 1997
+      ndr@pobox.com, http://www.pobox.com/~ndr/
  
       Wavefront OBJ model file format reader/writer/manipulator.
 
@@ -14,125 +12,98 @@
  */
 
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glut.h>
 
-#define GLM_MAX_SHININESS 100.0 /* for Poser */
-#define GLM_MAX_TEXTURE_SIZE 0 /* must be a power of 2 (i.e. 1024).
-				  0 means no limit. */
 
 #ifndef M_PI
-#define M_PI 3.14159265f
+#define M_PI 3.14159265
 #endif
 
-#define GLM_NONE     (0)            /* render with only vertices */
-#define GLM_FLAT     (1 << 0)       /* render with facet normals */
-#define GLM_SMOOTH   (1 << 1)       /* render with vertex normals */
-#define GLM_TEXTURE  (1 << 2)       /* render with texture coords */
-#define GLM_COLOR    (1 << 3)       /* render with colors */
-#define GLM_MATERIAL (1 << 4)       /* render with materials */
-#define GLM_2_SIDED  (1 << 5)       /* render two-sided polygons */
+#define GLM_NONE     (0)		/* render with only vertices */
+#define GLM_FLAT     (1 << 0)		/* render with facet normals */
+#define GLM_SMOOTH   (1 << 1)		/* render with vertex normals */
+#define GLM_TEXTURE  (1 << 2)		/* render with texture coords */
+#define GLM_COLOR    (1 << 3)		/* render with colors */
+#define GLM_MATERIAL (1 << 4)		/* render with materials */
+
 
 /* GLMmaterial: Structure that defines a material in a model. 
  */
 typedef struct _GLMmaterial
 {
-  char* name;                   /* name of material */
-  GLfloat diffuse[4];           /* diffuse component */
-  GLfloat ambient[4];           /* ambient component */
-  GLfloat specular[4];          /* specular component */
-#if 0
-  GLfloat emmissive[4];         /* emmissive component */
-#endif
-  GLfloat shininess;            /* specular exponent */
-  GLuint map_diffuse;     /* diffuse texture ID */
-#if 0
-  GLuint map_ambient;     /* ambient texture ID */
-  GLuint map_specular;     /* specular texture ID */
-  GLuint map_bump;     /* specular texture ID */
-  GLfloat dissolve;             /* transparency */
-  GLuint map_dissolve;     /* alpha texture ID */
-  GLuint lighting;                /* 0=disable, 1=ambient+diffuse, 2=full */
-#endif
-#ifdef AVL
-  int height,
-      width;
-  unsigned char* image;
-  char *t_filename;
-  GLuint t_id[1];	
-#endif
+  char* name;				/* name of material */
+  GLfloat diffuse[4];			/* diffuse component */
+  GLfloat ambient[4];			/* ambient component */
+  GLfloat specular[4];			/* specular component */
+  GLfloat emmissive[4];			/* emmissive component */
+  GLfloat shininess;			/* specular exponent */
 } GLMmaterial;
 
 /* GLMtriangle: Structure that defines a triangle in a model.
  */
 typedef struct _GLMtriangle {
-  GLuint vindices[3];           /* array of triangle vertex indices */
-  GLuint nindices[3];           /* array of triangle normal indices */
-  GLuint tindices[3];           /* array of triangle texcoord indices*/
-  GLuint findex;                /* index of triangle facet normal */
-#ifdef MATERIAL_BY_FACE
-  GLuint material;
-#endif
+  GLuint vindices[3];			/* array of triangle vertex indices */
+  GLuint nindices[3];			/* array of triangle normal indices */
+  GLuint tindices[3];			/* array of triangle texcoord indices*/
+  GLuint findex;			/* index of triangle facet normal */
 } GLMtriangle;
-
-typedef struct _GLMtexture {
-  char *name;
-  GLuint id;                    /* OpenGL texture ID */
-  GLfloat width;		/* width and height for texture coordinates */
-  GLfloat height;
-} GLMtexture;
-
 
 /* GLMgroup: Structure that defines a group in a model.
  */
 typedef struct _GLMgroup {
-  char*             name;           /* name of this group */
-  GLuint            numtriangles;   /* number of triangles in this group */
-  GLuint*           triangles;      /* array of triangle indices */
-  GLuint            material;       /* index to material for group */
-  struct _GLMgroup* next;           /* pointer to next group in model */
+  char*             name;		/* name of this group */
+  GLuint            numtriangles;	/* number of triangles in this group */
+  GLuint*           triangles;		/* array of triangle indices */
+  GLuint            material;           /* index to material for group */
+  struct _GLMgroup* next;		/* pointer to next group in model */
 } GLMgroup;
 
 /* GLMmodel: Structure that defines a model.
  */
 typedef struct _GLMmodel {
-  char*    pathname;            /* path to this model */
-  char*    mtllibname;          /* name of the material library */
+  char*    pathname;			/* path to this model */
+  char*    mtllibname;			/* name of the material library */
 
-  GLuint   numvertices;         /* number of vertices in model */
-  GLfloat* vertices;            /* array of vertices  */
+  GLfloat translacao[3];        /* coordenadas de translacao do objecto  */
+  GLfloat escala[3];            /* coordenadas de escala do objecto  */
+  GLfloat rotacao[4];           /* coordenadas de rotacao do objecto  */
 
-  GLuint   numnormals;          /* number of normals in model */
-  GLfloat* normals;             /* array of normals */
+  GLuint   numvertices;			/* number of vertices in model */
+  GLfloat* vertices;			/* array of vertices  */
 
-  GLuint   numtexcoords;        /* number of texcoords in model */
-  GLfloat* texcoords;           /* array of texture coordinates */
+  GLuint   numnormals;			/* number of normals in model */
+  GLfloat* normals;			/* array of normals */
 
-  GLuint   numfacetnorms;       /* number of facetnorms in model */
-  GLfloat* facetnorms;          /* array of facetnorms */
+  GLuint   numtexcoords;		/* number of texcoords in model */
+  GLfloat* texcoords;			/* array of texture coordinates */
 
-  GLuint       numtriangles;    /* number of triangles in model */
-  GLMtriangle* triangles;       /* array of triangles */
+  GLuint   numfacetnorms;		/* number of facetnorms in model */
+  GLfloat* facetnorms;			/* array of facetnorms */
 
-  GLuint       nummaterials;    /* number of materials in model */
-  GLMmaterial* materials;       /* array of materials */
+  GLuint       numtriangles;		/* number of triangles in model */
+  GLMtriangle* triangles;		/* array of triangles */
 
-  GLuint       numgroups;       /* number of groups in model */
-  GLMgroup*    groups;          /* linked list of groups */
+  GLuint       nummaterials;		/* number of materials in model */
+  GLMmaterial* materials;		/* array of materials */
 
-#ifndef AVL
-  GLuint       numtextures;
-  GLMtexture*  textures;
-#endif
+  GLuint       numgroups;		/* number of groups in model */
+  GLMgroup*    groups;			/* linked list of groups */
 
-  GLfloat position[3];          /* position of the model */
+  GLfloat position[3];			/* position of the model */
 
 } GLMmodel;
 
+// funcoes adicionadas
+GLvoid 
+relScale(GLMmodel* model, GLfloat scalex, GLfloat scaley, GLfloat scalez);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+GLvoid 
+relTrans(GLMmodel* model, GLfloat transx, GLfloat transy, GLfloat transz);
+
+GLvoid 
+relRotat(GLMmodel* model, GLfloat angle, GLfloat rotatex, GLfloat rotatey, GLfloat rotatez);
+
+//fim
 
 /* glmUnitize: "unitize" a model by translating it to the origin and
  * scaling it to fit in a unit cube around the origin.  Returns the
@@ -151,16 +122,6 @@ glmUnitize(GLMmodel* model);
  */
 GLvoid
 glmDimensions(GLMmodel* model, GLfloat* dimensions);
-/* glmDimensions: Calculates the dimensions (width, height, depth) and 
- * vertices of the axis-aligned minimum bounding box of
- * a model.
- *
- * model      - initialized GLMmodel structure
- * dimensions - array of 3 GLfloats (GLfloat dimensions[3])
- * mind, maxd - arrays of 3 GLfloats defining the vertices of the axis-aligned minimum bounding box of the model
- */
-GLvoid
-glmBoundingBox(GLMmodel* model, GLfloat* dimensions, GLfloat* mind, GLfloat* maxd);
 
 /* glmScale: Scales a model by a given amount.
  * 
@@ -191,7 +152,7 @@ glmFacetNormals(GLMmodel* model);
 /* glmVertexNormals: Generates smooth vertex normals for a model.
  * First builds a list of all the triangles each vertex is in.  Then
  * loops through each vertex in the the list averaging all the facet
- * normals of the triangles each vertex is in.  Finally, sets the
+ * normals of the triangles each vertex is in.  Finally, vectors the
  * normal index in the triangle for the vertex to the generated smooth
  * normal.  If the dot product of a facet normal and the facet normal
  * associated with the first triangle in the list of triangles the
@@ -203,10 +164,9 @@ glmFacetNormals(GLMmodel* model);
  *
  * model - initialized GLMmodel structure
  * angle - maximum angle (in degrees) to smooth across
- * keep_existing - if GL_TRUE, do not overwrite existing normals
  */
 GLvoid
-glmVertexNormals(GLMmodel* model, GLfloat angle, GLboolean keep_existing);
+glmVertexNormals(GLMmodel* model, GLfloat angle);
 
 /* glmLinearTexture: Generates texture coordinates according to a
  * linear projection of the texture map.  It generates these by
@@ -300,22 +260,3 @@ glmList(GLMmodel* model, GLuint mode);
  */
 GLvoid
 glmWeld(GLMmodel* model, GLfloat epsilon);
-
-GLuint
-glmLoadTexture(const char *filename, GLboolean alpha, GLboolean repeat, GLboolean filtering, GLboolean mipmaps, GLfloat *width, GLfloat *height);
-
-#ifdef AVL
-//AVL Prototypes
-//AVL Flip Texture
-GLvoid glmFlipTexture(unsigned char* texture, int width, int height);
-
-//AVL Flip Model Textures
-GLvoid glmFlipModelTextures(GLMmodel* model);
-
-//AVL END Prototypes
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-#endif

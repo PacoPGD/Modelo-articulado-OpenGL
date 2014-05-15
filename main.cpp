@@ -13,20 +13,21 @@
 #include <string>
 #include <math.h>
 #include <time.h>
-#include "obj.h"
-#include "matrix3d.h"
+//#include "obj.h"
+//#include "matrix3d.h"
+#include "glm.cpp"
 
 #include "esqueleto.hpp"
 
 
-using namespace virtua::objects::formats;
-using namespace virtua::math;
+//using namespace virtua::objects::formats;
+//using namespace virtua::math;
 
 Esqueleto e;
 GLdouble camX=0.0, camY=0.0, camZ=-200.0;
 
-OBJ object;
-
+//OBJ object;
+GLMmodel* model;
 
 /********************************************************************/
 int hsize=500;
@@ -64,12 +65,29 @@ void DibujaEscena(){
 	gluLookAt(camX, camY, camZ, 0, 0, 0, 0, 1.0, 0);
 
 	glMatrixMode(GL_MODELVIEW);
+	
+	
+	for(int i=1;i<=model->numvertices;i++){
+  	printf("%f \n",model->vertices[3*i+0]);
+  	model->vertices[3*i+0]+=10.0f;
+  	model->vertices[3*i+1]+=10.0f;
+  	model->vertices[3*i+2]-=1.0f;
+  }
+  	
+	
+  glColor3f(0.5f,0.5f,0.5f);
+  glLoadIdentity();
+  glScalef(0.8f,0.8f,0.8f);
+  glTranslatef(0.0f,-90.0f,0.0f);
+  glRotatef(180.0f,0,1,0);
+  glmDraw(model, GLM_SMOOTH);	
+	
 	glLoadIdentity();
 	dibujarEje();
   e.dibujar();
   
-  	
-	object.draw();
+
+//	object.draw();
 
 	glutSwapBuffers();
 	glFinish();
@@ -171,7 +189,7 @@ void myKeyboardSpecial(int key,int x, int y){
 	glutPostRedisplay();
 }
 
-void init(){
+/*void init(){
 		object.load("models/Cybermen/Cyberman.obj");
     object.enableBoundingBox();
     object.enableAxisAlignedBoundingBox();
@@ -180,11 +198,16 @@ void init(){
     M.addTranslation(1,0,1);
 		//M.addScale(0.1,0.1,0.1);
     object.applyTransformMatrix(M);
-}
+}*/
 
 int main(int argcp, char **argv){
   e.init();
   glutInit(&argcp,argv);
+  
+  	model = (GLMmodel*)malloc(sizeof(GLMmodel));
+	model = glmReadOBJ("Cybermen/Cyberman.obj");
+	
+  
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(hsize,hsize);
 	glutCreateWindow("Esqueleto");
@@ -193,7 +216,15 @@ int main(int argcp, char **argv){
 	glutKeyboardFunc(myKeyboard);
 	glutSpecialFunc(myKeyboardSpecial);
 	
-	init();
+
+/*	displayList=glGenLists(1);
+	glNewList(displayList,GL_COMPILE);
+
+	glEndList();
+	*/
+	
+	
+//	init();
 	/*glutIdleFunc(MueveCuadrado);
 	glutKeyboardFunc(myKeyboard);
 	glutMouseFunc(myMouseClick);
