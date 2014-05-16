@@ -131,6 +131,7 @@ public:
 	std::vector<Join> joins;
 	Vector3f globalPos;
 	int joinSelect;
+
 	GLMmodel* model;
 
 	Esqueleto(){
@@ -138,8 +139,9 @@ public:
 	}
 	
 	void init(){
+		char modelFile[] = "Cybermen/Cyberman.obj";
 		model = (GLMmodel*)malloc(sizeof(GLMmodel));
-		model = glmReadOBJ("Cybermen/Cyberman.obj");
+		model = glmReadOBJ(modelFile);
 	
 	
 		Vector3f pos(0,0,0);
@@ -332,20 +334,23 @@ public:
 	}
 	
 	void dibujarVertices(int id){
+		//aqui solo se deben de dibujar los vertices asignados a cada punto
+		//temporalmente se dibuja todo el modelo para facilitar ajustar el 
+		//esqueleto
 		static GLuint i;
 		static GLMgroup* group;
 		static GLMtriangle* triangle;
 		static GLMmaterial* material;
-		group = model->groups;
 		if(id==100){
-    glBegin(GL_TRIANGLES);
-    for (i = 0; i < group->numtriangles; i++) {
-      triangle = &T(group->triangles[i]);
-			glNormal3fv(&model->normals[3 * triangle->nindices[0]]);
-			glNormal3fv(&model->normals[3 * triangle->nindices[1]]);
-			glNormal3fv(&model->normals[3 * triangle->nindices[2]]);
-    }
-    glEnd();
+				group = model->groups;
+		  glBegin(GL_TRIANGLES);
+				for (i = 0; i < group->numtriangles; i++) {
+				  triangle = &T(group->triangles[i]);
+					glVertex3fv(&model->vertices[3 * triangle->vindices[0]]);
+					glVertex3fv(&model->vertices[3 * triangle->vindices[1]]);
+					glVertex3fv(&model->vertices[3 * triangle->vindices[2]]);
+				}
+		  glEnd();
     }
 	}	
 
@@ -367,8 +372,8 @@ public:
 		glScalef(0.8f,0.8f,0.8f);
 		glTranslatef(0.0f,-90.0f,0.0f);
 		glRotatef(180.0f,0,1,0);
-		glmDraw(model, GLM_FLAT);	
-		//dibujarVertices(100);
+		//glmDraw(model, GLM_SMOOTH/*GLM_FLAT*/);	
+		dibujarVertices(100);
 
 
   glColor3f(1,0,0);
