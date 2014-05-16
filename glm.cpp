@@ -446,7 +446,8 @@ glmFirstPass(GLMmodel* model, FILE* file)
   char      buf[128];
 
   /* make a default group */
-  group = glmAddGroup(model, "default");
+  char defaultgroup[] = "default";
+  group = glmAddGroup(model, defaultgroup);
 
   numvertices = numnormals = numtexcoords = numtriangles = 0;
   while(fscanf(file, "%s", buf) != EOF) {
@@ -1486,7 +1487,8 @@ glmWriteOBJ(GLMmodel* model, char* filename, GLuint mode)
   /* spit out the texture coordinates */
   if (mode & GLM_TEXTURE) {
     fprintf(file, "\n");
-    fprintf(file, "# %d texcoords\n", model->texcoords);
+    //CAMBIADO
+    fprintf(file, "# %0.f texcoords\n", *model->texcoords);
     for (i = 1; i <= model->numtexcoords; i++) {
       fprintf(file, "vt %f %f\n", 
 	      model->texcoords[2 * i + 0],
@@ -1635,6 +1637,7 @@ glmDraw(GLMmodel* model, GLuint mode)
 
   group = model->groups;
   while (group) {
+  	//printf("nuevo grupo!!!!\n");
     if (mode & GLM_MATERIAL) {
       material = &model->materials[group->material];
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient);
