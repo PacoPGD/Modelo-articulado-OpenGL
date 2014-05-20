@@ -108,6 +108,7 @@ void EscalaVentana(GLsizei w, GLsizei h){
 void myKeyboard(unsigned char key,int x, int y){
 	Vector3f aux;
 	aux = e.joins[e.joinSelect].angle;
+
 	switch(key){
 		case 'o':
 			if(e.joinSelect<(e.joins.size()-1)){
@@ -150,6 +151,9 @@ void myKeyboard(unsigned char key,int x, int y){
 			aux.z--;
 			e.joins[e.joinSelect].rotate(aux);
 		break;
+
+		case 27:
+			exit (0);
 	}
 
 	glutPostRedisplay();
