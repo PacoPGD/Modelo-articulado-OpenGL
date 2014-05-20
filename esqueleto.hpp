@@ -143,8 +143,15 @@ public:
 		model = (GLMmodel*)malloc(sizeof(GLMmodel));
 		model = glmReadOBJ(modelFile);
 	
+		poseReposo();
+
+		
+		
+		asignarPuntos();
+	}
 	
-		Vector3f pos(0,0,0);
+	void poseReposo(){
+		Vector3f pos(0,40,10);
 		Vector3f topLimit(360,360,360);
 		Vector3f botLimit(-360,-360,-360);
 		
@@ -153,7 +160,7 @@ public:
 		joins.push_back(j);
 		
 		//1
-		pos.set(0,20,0);
+		pos.set(0,55,10);
 		topLimit.set(0,90,40);
 		botLimit.set(-0,-90,-40);
 		j.set(TORSO,ROOT,pos,topLimit,botLimit);
@@ -161,7 +168,7 @@ public:
 		
 		
 		//2
-		pos.set(0,40,0);
+		pos.set(0,60,10);
 		topLimit.set(20,0,30);
 		botLimit.set(-60,-0,-30);
 		j.set(CUELLO,TORSO,pos,topLimit,botLimit);
@@ -169,135 +176,133 @@ public:
 
 	
 		//3
-		pos.set(0,-20,0);
+		pos.set(0,10,10);
 		topLimit.set(30,20,10);
 		botLimit.set(-30,-20,-10);
 		j.set(CINTURA,ROOT,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//4
-		pos.set(0,60,0);
+		pos.set(0,85,10);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(CABEZA,CUELLO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//5
-		pos.set(20,20,0);
+		pos.set(20,50,10);
 		topLimit.set(150,120,80);
 		botLimit.set(-90,-60,-90);
 		j.set(HOMBRO_DER,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 	 	//6
-		pos.set(-20,20,0);
+		pos.set(-20,50,10);
 		topLimit.set(90,60,80);
 		botLimit.set(-150,-120,-90);
 		j.set(HOMBRO_IZQ,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//7
-		pos.set(20,-20,0);
+		pos.set(12,10,10);
 		topLimit.set(50,10,0);
 		botLimit.set(-30,-10,-0);
 		j.set(CADERA_DER,CINTURA,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//8
-		pos.set(-20,-20,0);
+		pos.set(-14,10,10);
 		topLimit.set(50,10,0);
 		botLimit.set(-30,-10,-0);
 		j.set(CADERA_IZQ,CINTURA,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//9
-		pos.set(40,20,0);
+		pos.set(30,30,10);
 		topLimit.set(0,0,140);
 		botLimit.set(-0,-0,-0);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//10
-		pos.set(-40,20,0);
+		pos.set(-30,30,10);
 		topLimit.set(0,0,140);
 		botLimit.set(-0,-0,-0);
 		j.set(CODO_IZQ,HOMBRO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//11
-		pos.set(60,20,0);
+		pos.set(40,10,10);
 		topLimit.set(360,30,50);
 		botLimit.set(-360,-30,-50);
 		j.set(MUNECA_DER,CODO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//12
-		pos.set(-60,20,0);
+		pos.set(-40,10,10);
 		topLimit.set(360,30,50);
 		botLimit.set(-360,-30,-50);
 		j.set(MUNECA_IZQ,CODO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 
 		//13
-		pos.set(80,20,0);
+		pos.set(46,-5,10);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(MANO_DER,MUNECA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//14
-		pos.set(-80,20,0);
+		pos.set(-46,-5,10);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(MANO_IZQ,MUNECA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//15
-		pos.set(20,-40,0);
+		pos.set(12,-20,10);
 		topLimit.set(0,0,0);
 		botLimit.set(-60,-0,-0);
 		j.set(RODILLA_DER,CADERA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//16
-		pos.set(-20,-40,0);
+		pos.set(-14,-20,10);
 		topLimit.set(0,0,0);
 		botLimit.set(-60,-0,-0);
 		j.set(RODILLA_IZQ,CADERA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//17
-		pos.set(20,-60,0);
+		pos.set(12,-65,10);
 		topLimit.set(0,0,0);
 		botLimit.set(-0,-0,-0);
 		j.set(TALON_DER,RODILLA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//18
-		pos.set(-20,-60,0);
+		pos.set(-14,-65,10);
 		topLimit.set(0,0,0);
 		botLimit.set(-0,-0,-0);
 		j.set(TALON_IZQ,RODILLA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//19
-		pos.set(20,-60,-20);
+		pos.set(12,-70,-15);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(PIE_DER,TALON_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//20
-		pos.set(-20,-60,-20);
+		pos.set(-12,-70,-15);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(PIE_IZQ,TALON_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
-		
-		
-		asignarPuntos();
 	}
-	
+
+
 	void asignarPuntos(){
 	
 	}
