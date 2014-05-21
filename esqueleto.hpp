@@ -22,6 +22,7 @@
 
 
 #include "glm.cpp"
+#include "math.h"
 
 class Vector3f{
 public:  
@@ -131,7 +132,7 @@ public:
 	std::vector<Join> joins;
 	Vector3f globalPos;
 	int joinSelect;
-
+	std::vector<std::vector<int> > asignacion;
 	GLMmodel* model;
 
 	Esqueleto(){
@@ -142,10 +143,10 @@ public:
 		char modelFile[] = "Cybermen/Cyberman.obj";
 		model = (GLMmodel*)malloc(sizeof(GLMmodel));
 		model = glmReadOBJ(modelFile);
-	
-		poseReposo();
-
 		
+		poseReposo();
+		
+		asignacion.resize(joins.size());
 		
 		asignarPuntos();
 	}
@@ -300,11 +301,53 @@ public:
 		botLimit.set(-360,-360,-360);
 		j.set(PIE_IZQ,TALON_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
+
 	}
 
+  double distancia(Vector3f v,Vector3f v2){
+  	return pow((v2.x-v.x),2)+pow((v2.y-v.y),2)+pow((v2.z-v.z),2);
+  }
 
+	double distanciaPuntoTriangulo(GLMtriangle *t, Vector3f p){
+		Vector3f t1(model->vertices[3 * t->vindices[0]], 
+								model->vertices[3 * t->vindices[0]+1], 
+								model->vertices[3 * t->vindices[0]+2]);
+		Vector3f t2(model->vertices[3 * t->vindices[1]], 
+								model->vertices[3 * t->vindices[1]+1], 
+								model->vertices[3 * t->vindices[1]+2]); 
+		Vector3f t3(model->vertices[3 * t->vindices[2]], 
+								model->vertices[3 * t->vindices[2]+1], 
+								model->vertices[3 * t->vindices[2]+2]);  
+		
+		Vector3f media((t1.x+t2.x+t3.x)/3,(t1.y+t2.y+t3.y)/3,(t1.z+t2.z+t3.z)/3);
+		
+		return distancia(media,p);
+
+	}
+
+	/****************************** Asignacion de puntos */
 	void asignarPuntos(){
-	
+
+	 	GLuint k;
+	 	GLMgroup* group;
+	 	GLMtriangle* triangle;
+		group = model->groups;
+		double min,dist;
+		int indiceSelect;
+		
+		for (int i = 0; i < group->numtriangles; i++) {
+				triangle = &T(group->triangles[i]);
+				min=distanciaPuntoTriangulo(triangle,joins[0].pos);
+				indiceSelect=0;
+				for(int k=1;k<joins.size();k++){
+				  dist=distanciaPuntoTriangulo(triangle,joins[k].pos);
+				  if(min>dist){
+				  	min=dist;
+				  	indiceSelect=k;
+				  }
+				}
+				asignacion[indiceSelect].push_back(i);
+		}
 	}
 
 
@@ -323,15 +366,16 @@ public:
 
 	void punto(int j){
 		glBegin(GL_POINTS);
+			glColor3f(1.0f,0.0f,0.0f);
 			if(j==joinSelect)
 				glColor3f(0.0f,1.0f,0.0f);
 			glVertex3f(joins[j].pos.x,joins[j].pos.y, joins[j].pos.z);
-			glColor3f(1.0f,0.0f,0.0f);
 		glEnd();
 	}
 
 	void linea(int j){
 		glBegin(GL_LINES);
+			glColor3f(1.0f,0.0f,0.0f);
 			glVertex3f(joins[j].pos.x,joins[j].pos.y, joins[j].pos.z);
 			int r=joins[j].root;
 			glVertex3f(joins[r].pos.x,joins[r].pos.y, joins[r].pos.z);
@@ -342,12 +386,29 @@ public:
 		//aqui solo se deben de dibujar los vertices asignados a cada punto
 		//temporalmente se dibuja todo el modelo para facilitar ajustar el 
 		//esqueleto
-		static GLuint i;
-		static GLMgroup* group;
-		static GLMtriangle* triangle;
-		static GLMmaterial* material;
-		if(id==100){
-				group = model->groups;
+	 	GLuint i;
+	 	GLMgroup* group;
+	 	GLMtriangle* triangle;
+	 	group = model->groups;
+	 	glPushMatrix();
+	 	glColor3f(0.5f,0.5f,0.5f);
+		//glLoadIdentity();
+		//glScalef(0.8f,0.8f,0.8f);
+		//glTranslatef(0.0f,-90.0f,0.0f);
+		
+		glBegin(GL_TRIANGLES);
+			for(int i=0;i<asignacion[id].size();i++){
+					int itri=asignacion[id][i];
+					triangle = &T(group->triangles[itri]);
+					glVertex3fv(&model->vertices[3 * triangle->vindices[0]]);
+					glVertex3fv(&model->vertices[3 * triangle->vindices[1]]);
+					glVertex3fv(&model->vertices[3 * triangle->vindices[2]]);
+			}
+		glEnd();
+		glPopMatrix();
+		
+		/*if(id==100){
+			group = model->groups;
 		  glBegin(GL_TRIANGLES);
 				for (i = 0; i < group->numtriangles; i++) {
 				  triangle = &T(group->triangles[i]);
@@ -356,7 +417,7 @@ public:
 					glVertex3fv(&model->vertices[3 * triangle->vindices[2]]);
 				}
 		  glEnd();
-    }
+    }*/
 	}	
 
 	void move(float x, float y, float z){
@@ -370,20 +431,15 @@ public:
 
 	void dibujar(){
 		glMatrixMode(GL_MODELVIEW);
-		
-	
-		glColor3f(0.5f,0.5f,0.5f);
-		glLoadIdentity();
-		glScalef(0.8f,0.8f,0.8f);
-		glTranslatef(0.0f,-90.0f,0.0f);
-		glRotatef(180.0f,0,1,0);
+
 		//glmDraw(model, GLM_SMOOTH/*GLM_FLAT*/);	
-		dibujarVertices(100);
+		//dibujarVertices(100);
 
 
   glColor3f(1,0,0);
   glPointSize(10.0f);
 glLoadIdentity();
+glRotatef(180.0f,0,1,0);
 glPushMatrix();
 	glTranslatef(globalPos.x,globalPos.y,globalPos.z);
 	punto(ROOT);
