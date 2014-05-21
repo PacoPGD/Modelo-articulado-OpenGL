@@ -13,18 +13,16 @@
 #include <string>
 #include <math.h>
 #include <time.h>
-//#include "obj.h"
-//#include "matrix3d.h"
+
 
 
 #include "esqueleto.hpp"
 
 
-//using namespace virtua::objects::formats;
-//using namespace virtua::math;
+
 
 Esqueleto e;
-GLdouble camX=0.0, camY=0.0, camZ=-200.0;
+GLdouble camX=0.0, camY=100.0, camZ=-250.0;
 
 
 /********************************************************************/
@@ -60,24 +58,14 @@ void DibujaEscena(){
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60, 1.0, 100.0, 500.0);
-	gluLookAt(camX, camY, camZ, 0, 0, 0, 0, 1.0, 0);
+	gluLookAt(camX, camY, camZ, 0, 100, 0, 0, 1.0, 0);
 
 	glMatrixMode(GL_MODELVIEW);
-	
-	
-	/*for(int i=1;i<=model->numvertices;i++){
-  	printf("%f \n",model->vertices[3*i+0]);
-  	model->vertices[3*i+0]+=10.0f;
-  	model->vertices[3*i+1]+=10.0f;
-  	model->vertices[3*i+2]-=1.0f;
-  }*/
-  	
+
 	glLoadIdentity();
 	dibujarEje();
   e.dibujar();
   
-
-//	object.draw();
 
 	glutSwapBuffers();
 	glFinish();
@@ -95,13 +83,11 @@ void EscalaVentana(GLsizei w, GLsizei h){
 	GLdouble  zFar=500.0;
 	gluPerspective(  fovy,    aspect,    zNear,    zFar);
 	GLdouble centerX=0;
-	GLdouble centerY=0;
+	GLdouble centerY=100;
 	GLdouble centerZ=0;
 	GLdouble upX=0;
 	GLdouble upY=1.0f;
-	GLdouble upZ=0;
-	
-	
+	GLdouble upZ=0;	
 	gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
 }
 
@@ -162,65 +148,40 @@ void myKeyboard(unsigned char key,int x, int y){
 void myKeyboardSpecial(int key,int x, int y){
 	switch(key){
 		case GLUT_KEY_LEFT:
-		camX-=1.0f;
+		camX-=5.0f;
 		break;
 		case GLUT_KEY_RIGHT:
-		camX+=1.0f;
+		camX+=5.0f;
 		break;
 		case GLUT_KEY_UP:
-		camY+=1.0f;
+		camY+=5.0f;
 		break;
 		case GLUT_KEY_DOWN:
-		camY-=1.0f;
+		camY-=5.0f;
 		break;
 		case GLUT_KEY_PAGE_DOWN:
-		camZ-=1.0f;
+		camZ-=5.0f;
 		break;
 		case GLUT_KEY_PAGE_UP:
-		camZ+=1.0f;
+		camZ+=5.0f;
 		break;
 	}
 	glutPostRedisplay();
 }
 
-/*void init(){
-		object.load("models/Cybermen/Cyberman.obj");
-    object.enableBoundingBox();
-    object.enableAxisAlignedBoundingBox();
-    Matrix3D M;
-    M.addYRotation(PI/4);
-    M.addTranslation(1,0,1);
-		//M.addScale(0.1,0.1,0.1);
-    object.applyTransformMatrix(M);
-}*/
 
 int main(int argcp, char **argv){
   e.init();
   glutInit(&argcp,argv);
   
-
-	
-  
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA /*| GLUT_DEPTH*/);
 	glutInitWindowSize(hsize,hsize);
 	glutCreateWindow("Esqueleto");
+	
 	glutDisplayFunc(DibujaEscena);
 	glutReshapeFunc(EscalaVentana);
 	glutKeyboardFunc(myKeyboard);
 	glutSpecialFunc(myKeyboardSpecial);
 	
-
-/*	displayList=glGenLists(1);
-	glNewList(displayList,GL_COMPILE);
-
-	glEndList();
-	*/
-	
-	
-//	init();
-	/*glutIdleFunc(MueveCuadrado);
-	glutKeyboardFunc(myKeyboard);
-	glutMouseFunc(myMouseClick);
-	glutMotionFunc(myMotion);*/
 	glutMainLoop();
 }
