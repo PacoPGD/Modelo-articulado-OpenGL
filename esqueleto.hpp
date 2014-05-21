@@ -191,16 +191,16 @@ public:
 		joins.push_back(j);
 		
 		//5
-		pos.set(21,150,-12);
-		topLimit.set(150,120,80);
-		botLimit.set(-90,-60,-90);
+		pos.set(28,150,-12);
+		topLimit.set(90,120,80);
+		botLimit.set(-150,-60,-90);
 		j.set(HOMBRO_DER,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 	 	//6
-		pos.set(-19,150,-12);
-		topLimit.set(90,60,80);
-		botLimit.set(-150,-120,-90);
+		pos.set(-26,150,-12);
+		topLimit.set(90,120,80);
+		botLimit.set(-150,-60,-90);
 		j.set(HOMBRO_IZQ,TORSO,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
@@ -219,84 +219,84 @@ public:
 		joins.push_back(j);
 		
 		//9
-		pos.set(35,125,-12);
-		topLimit.set(0,0,140);
-		botLimit.set(-0,-0,-0);
+		pos.set(40,125,-12);
+		topLimit.set(0,0,0);
+		botLimit.set(-0,-0,-140);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//10
-		pos.set(-33,125,-12);
+		pos.set(-38,125,-12);
 		topLimit.set(0,0,140);
-		botLimit.set(-0,-0,-0);
+		botLimit.set(-0,-0,0);
 		j.set(CODO_IZQ,HOMBRO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//11
-		pos.set(47,95,-12);
+		pos.set(56,95,-12);
 		topLimit.set(360,30,50);
 		botLimit.set(-360,-30,-50);
 		j.set(MUNECA_DER,CODO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//12
-		pos.set(-45,95,-12);
+		pos.set(-54,95,-12);
 		topLimit.set(360,30,50);
 		botLimit.set(-360,-30,-50);
 		j.set(MUNECA_IZQ,CODO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 
 		//13
-		pos.set(52,85,-12);
+		pos.set(58,85,-12);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(MANO_DER,MUNECA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//14
-		pos.set(-50,85,-12);
+		pos.set(-56,85,-12);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(MANO_IZQ,MUNECA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//15
-		pos.set(15,70,-12);
-		topLimit.set(0,0,0);
-		botLimit.set(-60,-0,-0);
+		pos.set(15,68,-12);
+		topLimit.set(60,0,0);
+		botLimit.set(0,0,0);
 		j.set(RODILLA_DER,CADERA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//16
-		pos.set(-13,70,-12);
-		topLimit.set(0,0,0);
-		botLimit.set(-60,-0,-0);
+		pos.set(-13,68,-12);
+		topLimit.set(60,0,0);
+		botLimit.set(0,0,0);
 		j.set(RODILLA_IZQ,CADERA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//17
-		pos.set(15,5,-12);
+		pos.set(17,5,-12);
 		topLimit.set(0,0,0);
 		botLimit.set(-0,-0,-0);
 		j.set(TALON_DER,RODILLA_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//18
-		pos.set(-12,5,-12);
+		pos.set(-14,5,-12);
 		topLimit.set(0,0,0);
 		botLimit.set(-0,-0,-0);
 		j.set(TALON_IZQ,RODILLA_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//19
-		pos.set(15,5,28);
+		pos.set(17,5,20);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(PIE_DER,TALON_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//20
-		pos.set(-12,5,28);
+		pos.set(-14,5,20);
 		topLimit.set(360,360,360);
 		botLimit.set(-360,-360,-360);
 		j.set(PIE_IZQ,TALON_IZQ,pos,topLimit,botLimit);
@@ -340,7 +340,11 @@ public:
 				min=distanciaPuntoTriangulo(triangle,joins[0].pos);
 				indiceSelect=0;
 				for(int k=1;k<joins.size();k++){
-				  dist=distanciaPuntoTriangulo(triangle,joins[k].pos);
+					Vector3f p((joins[k].pos.x+joins[joins[k].root].pos.x)/2.0,
+										(joins[k].pos.y+joins[joins[k].root].pos.y)/2.0,
+										(joins[k].pos.z+joins[joins[k].root].pos.z)/2.0
+										);
+				  dist=distanciaPuntoTriangulo(triangle,p);
 				  if(min>dist){
 				  	min=dist;
 				  	indiceSelect=k;
@@ -442,6 +446,7 @@ glLoadIdentity();
 glRotatef(180.0f,0,1,0);
 glPushMatrix();
 	glTranslatef(globalPos.x,globalPos.y,globalPos.z);
+	dibujarVertices(ROOT);
 	punto(ROOT);
 	rotate(ROOT);
 	//Torso
