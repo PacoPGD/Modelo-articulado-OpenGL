@@ -71,6 +71,12 @@ void DibujaEscena(){
 	glFinish();
 }
 
+void timer(int iUnused)
+{
+    glutPostRedisplay();
+    glutTimerFunc(1000.0/60.0, timer, 0);
+}
+
 void EscalaVentana(GLsizei w, GLsizei h){
 	if(h==0) h=1;
 	glViewport(0,0,w,h); // 0, 0, w, h
@@ -166,7 +172,6 @@ void myKeyboardSpecial(int key,int x, int y){
 		camZ+=5.0f;
 		break;
 	}
-	glutPostRedisplay();
 }
 
 
@@ -183,5 +188,8 @@ int main(int argcp, char **argv){
 	glutKeyboardFunc(myKeyboard);
 	glutSpecialFunc(myKeyboardSpecial);
 	
+	timer(0);
+	
 	glutMainLoop();
+
 }
