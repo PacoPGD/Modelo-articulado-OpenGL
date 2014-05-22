@@ -387,18 +387,13 @@ public:
 	}
 	
 	void dibujarVertices(int id){
-		//aqui solo se deben de dibujar los vertices asignados a cada punto
-		//temporalmente se dibuja todo el modelo para facilitar ajustar el 
-		//esqueleto
 	 	GLuint i;
 	 	GLMgroup* group;
 	 	GLMtriangle* triangle;
 	 	group = model->groups;
 	 	glPushMatrix();
 	 	glColor3f(0.5f,0.5f,0.5f);
-		//glLoadIdentity();
-		//glScalef(0.8f,0.8f,0.8f);
-		//glTranslatef(0.0f,-90.0f,0.0f);
+
 		
 		glBegin(GL_TRIANGLES);
 			for(int i=0;i<asignacion[id].size();i++){
@@ -410,18 +405,6 @@ public:
 			}
 		glEnd();
 		glPopMatrix();
-		
-		/*if(id==100){
-			group = model->groups;
-		  glBegin(GL_TRIANGLES);
-				for (i = 0; i < group->numtriangles; i++) {
-				  triangle = &T(group->triangles[i]);
-					glVertex3fv(&model->vertices[3 * triangle->vindices[0]]);
-					glVertex3fv(&model->vertices[3 * triangle->vindices[1]]);
-					glVertex3fv(&model->vertices[3 * triangle->vindices[2]]);
-				}
-		  glEnd();
-    }*/
 	}	
 
 	void move(float x, float y, float z){
@@ -430,19 +413,22 @@ public:
 		globalPos.z=z;
 	}
 	
+	void dibujarParte(int id){
+			dibujarVertices(id);
+			linea(id);
+			punto(id);
+			rotate(id);
+	}
 	
 
 
 	void dibujar(){
 		glMatrixMode(GL_MODELVIEW);
 
-		//glmDraw(model, GLM_SMOOTH/*GLM_FLAT*/);	
-		//dibujarVertices(100);
-
-
   glColor3f(1,0,0);
   glPointSize(10.0f);
 glLoadIdentity();
+// pongo de cara al esqueleto
 glRotatef(180.0f,0,1,0);
 glPushMatrix();
 	glTranslatef(globalPos.x,globalPos.y,globalPos.z);
@@ -451,76 +437,43 @@ glPushMatrix();
 	rotate(ROOT);
 	//Torso
 	glPushMatrix();
-		dibujarVertices(TORSO);
-		punto(TORSO);
-		linea(TORSO);
-		rotate(TORSO);
+		dibujarParte(TORSO);
 		//cuello
 		glPushMatrix();
-			dibujarVertices(CUELLO);
-			punto(CUELLO);
-			linea(CUELLO);
-			rotate(CUELLO);
+			dibujarParte(CUELLO);
 			//cabeza
 			glPushMatrix();
-				dibujarVertices(CABEZA);
-				punto(CABEZA);
-				linea(CABEZA);
-				rotate(CABEZA);
+				dibujarParte(CABEZA);
 			glPopMatrix();
 		glPopMatrix();
 		//hombroDer
 		glPushMatrix();
-			dibujarVertices(HOMBRO_DER);
-			punto(HOMBRO_DER);
-			linea(HOMBRO_DER);
-			rotate(HOMBRO_DER);
+			dibujarParte(HOMBRO_DER);
 			//codoDer
 			glPushMatrix();
-				dibujarVertices(CODO_DER);
-				punto(CODO_DER);
-				linea(CODO_DER);
-				rotate(CODO_DER);
+				dibujarParte(CODO_DER);
 				//munecaDer
 				glPushMatrix();
-					dibujarVertices(MUNECA_DER);
-					punto(MUNECA_DER);
-					linea(MUNECA_DER);
-					rotate(MUNECA_DER);
+					dibujarParte(MUNECA_DER);
 					//manoDer
 					glPushMatrix();
-						dibujarVertices(MANO_DER);
-						punto(MANO_DER);
-						linea(MANO_DER);
-						rotate(MANO_DER);
+						dibujarParte(MANO_DER);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
 		glPopMatrix();
 		//hombroIzq
 		glPushMatrix();
-			dibujarVertices(HOMBRO_IZQ);
-			punto(HOMBRO_IZQ);
-			linea(HOMBRO_IZQ);
-			rotate(HOMBRO_IZQ);
+			dibujarParte(HOMBRO_IZQ);
 			//codoIzq
 			glPushMatrix();
-				dibujarVertices(CODO_IZQ);
-				punto(CODO_IZQ);
-				linea(CODO_IZQ);
-				rotate(CODO_IZQ);
+				dibujarParte(CODO_IZQ);
 				//munecaIzq
 				glPushMatrix();
-					dibujarVertices(MUNECA_IZQ);
-					punto(MUNECA_IZQ);
-					linea(MUNECA_IZQ);
-					rotate(MUNECA_IZQ);
+					dibujarParte(MUNECA_IZQ);
 					//manoIzq
 					glPushMatrix();
-						dibujarVertices(MANO_IZQ);
-						punto(MANO_IZQ);
-						linea(MANO_IZQ);
-						rotate(MANO_IZQ);
+						dibujarParte(MANO_IZQ);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
@@ -528,62 +481,35 @@ glPushMatrix();
 	glPopMatrix();
 	//cintura
 	glPushMatrix();
-		dibujarVertices(CINTURA);
-		punto(CINTURA);
-		linea(CINTURA);
-		rotate(CINTURA);
+		dibujarParte(CINTURA);
 		//caderaDer
 		glPushMatrix();
-			dibujarVertices(CADERA_DER);
-			punto(CADERA_DER);
-			linea(CADERA_DER);
-			rotate(CADERA_DER);
+			dibujarParte(CADERA_DER);
 			//rodillaDer
 			glPushMatrix();
-				dibujarVertices(RODILLA_DER);
-				punto(RODILLA_DER);
-				linea(RODILLA_DER);
-				rotate(RODILLA_DER);
+				dibujarParte(RODILLA_DER);
 				//talonDer
 				glPushMatrix();
-					dibujarVertices(TALON_DER);
-					punto(TALON_DER);
-					linea(TALON_DER);
-					rotate(TALON_DER);
+					dibujarParte(TALON_DER);
 					//pieDer
 					glPushMatrix();
-						dibujarVertices(PIE_DER);
-						punto(PIE_DER);
-						linea(PIE_DER);
-						rotate(PIE_DER);
+						dibujarParte(PIE_DER);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
 		glPopMatrix();
 		//caderaIzq
 		glPushMatrix();
-			dibujarVertices(CADERA_IZQ);
-			punto(CADERA_IZQ);
-			linea(CADERA_IZQ);
-			rotate(CADERA_IZQ);
+			dibujarParte(CADERA_IZQ);
 			//rodillaIzq
 			glPushMatrix();
-				dibujarVertices(RODILLA_IZQ);
-				punto(RODILLA_IZQ);
-				linea(RODILLA_IZQ);
-				rotate(RODILLA_IZQ);
+				dibujarParte(RODILLA_IZQ);
 				//talonIzq
 				glPushMatrix();
-					dibujarVertices(TALON_IZQ);
-					punto(TALON_IZQ);
-					linea(TALON_IZQ);
-					rotate(TALON_IZQ);
+					dibujarParte(TALON_IZQ);
 					//pideIzq
 					glPushMatrix();
-						dibujarVertices(PIE_IZQ);
-						punto(PIE_IZQ);
-						linea(PIE_IZQ);
-						rotate(PIE_IZQ);
+						dibujarParte(PIE_IZQ);
 					glPopMatrix();
 				glPopMatrix();
 			glPopMatrix();
