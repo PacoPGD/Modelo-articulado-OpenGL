@@ -20,6 +20,10 @@
 
 
 
+#define ANIMACION_REPOSO 0
+#define ANIMACION_SALTO 1
+#define ANIMACION_SALUDO 2
+
 
 Esqueleto e;
 GLdouble camX=0.0, camY=100.0, camZ=-250.0;
@@ -71,11 +75,35 @@ void DibujaEscena(){
 	glFinish();
 }
 
-void timer(int iUnused)
-{
-    glutPostRedisplay();
-    glutTimerFunc(1000.0/60.0, timer, 0);
+
+void aniSalto(int t){
+	Vector3f aux;
+	aux = e.joins[1].angle;
+	aux.x++;
+	aux.y++;
+	aux.z++;
+	e.joins[1].rotate(aux);
+	printf("-> %d\n",t);
+	if(t<100){
+		glutTimerFunc(1000.0/60.0, aniSalto, t+1);
+	}else{
+		e.poseReposo();
+	}
+	glutPostRedisplay();
 }
+
+void aniSaludo(int t){
+
+
+	glutPostRedisplay();
+	if(t<1000){
+		glutTimerFunc(1000.0/60.0, aniSalto, t+1);
+	}else{
+		e.poseReposo();
+	}
+}
+
+	
 
 void EscalaVentana(GLsizei w, GLsizei h){
 	if(h==0) h=1;
@@ -143,13 +171,19 @@ void myKeyboard(unsigned char key,int x, int y){
 			aux.z--;
 			e.joins[e.joinSelect].rotate(aux);
 		break;
-
+		case 't':
+			aniSaludo(0);
+		break;
+		case 'g':
+			aniSalto(0);
+		break;
 		case 27:
 			exit (0);
 	}
-
 	glutPostRedisplay();
 }
+
+
 
 void myKeyboardSpecial(int key,int x, int y){
 	switch(key){
@@ -187,9 +221,7 @@ int main(int argcp, char **argv){
 	glutReshapeFunc(EscalaVentana);
 	glutKeyboardFunc(myKeyboard);
 	glutSpecialFunc(myKeyboardSpecial);
-	
-	timer(0);
-	
+
 	glutMainLoop();
 
 }
