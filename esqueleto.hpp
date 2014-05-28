@@ -21,8 +21,10 @@
 #define PIE_IZQ 20
 
 
+#include <math.h>
+
 #include "glm.cpp"
-#include "math.h"
+
 
 class Vector3f{
 public:  
@@ -149,9 +151,12 @@ public:
 		asignacion.resize(joins.size());
 		
 		asignarPuntos();
+		
 	}
 	
 	void poseReposo(){
+		joins.clear();
+	
 		Vector3f pos(1,140,-12);
 		Vector3f topLimit(360,360,360);
 		Vector3f botLimit(-360,-360,-360);
