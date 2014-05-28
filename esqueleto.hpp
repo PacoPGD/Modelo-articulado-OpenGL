@@ -229,14 +229,14 @@ public:
 		
 		//9
 		pos.set(40,125,-12);
-		topLimit.set(0,0,0);
+		topLimit.set(70,0,0);
 		botLimit.set(-0,-0,-140);
 		j.set(CODO_DER,HOMBRO_DER,pos,topLimit,botLimit);
 		joins.push_back(j);
 		
 		//10
 		pos.set(-38,125,-12);
-		topLimit.set(0,0,140);
+		topLimit.set(70,0,140);
 		botLimit.set(-0,-0,0);
 		j.set(CODO_IZQ,HOMBRO_IZQ,pos,topLimit,botLimit);
 		joins.push_back(j);
