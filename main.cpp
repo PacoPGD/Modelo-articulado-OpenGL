@@ -72,7 +72,7 @@ void DibujaEscena(){
 }
 
 
-void aniSalto(int t){
+void animSalto(int t){
 	Vector3f aux;
 	
 	if(t<50){
@@ -207,14 +207,14 @@ void aniSalto(int t){
 
 	printf("-> %d\n",t);
 	if(t<350){
-		glutTimerFunc(1000.0/60.0, aniSalto, t+1);
+		glutTimerFunc(1000.0/60.0, animSalto, t+1);
 	}else{
 		e.poseReposo();
 	}
 	glutPostRedisplay();
 }
 
-void aniSaludo(int t){
+void animSaludoCibermen(int t){
 	Vector3f aux;
 	
 	if(t<60){
@@ -232,7 +232,7 @@ void aniSaludo(int t){
 	else if(t<200)
 	{
 		aux = e.joins[HOMBRO_DER].angle;
-		aux.x+=1.0f;
+		aux.x-=1.0f;
 		e.joins[HOMBRO_DER].rotate(aux);
 		aux = e.joins[CODO_IZQ].angle;
 		aux.z+=1.2f;
@@ -242,14 +242,14 @@ void aniSaludo(int t){
 
 	printf("-> %d\n",t);
 	if(t<300){
-		glutTimerFunc(1000.0/60.0, aniSaludo, t+1);
+		glutTimerFunc(1000.0/60.0, animSaludoCibermen, t+1);
 	}else{
 		e.poseReposo();
 	}
 	glutPostRedisplay();
 }
 
-void aniBaile(int t){
+void animBaile(int t){
 	Vector3f aux;
 
 	if(t<50)
@@ -261,10 +261,10 @@ void aniBaile(int t){
 		aux.x+=1.0f;
 		e.joins[HOMBRO_IZQ].rotate(aux);
 		aux = e.joins[CODO_DER].angle;
-		aux.x+=1.0f;
+		aux.x-=1.0f;
 		e.joins[CODO_DER].rotate(aux);
 		aux = e.joins[CODO_IZQ].angle;
-		aux.x+=1.0f;
+		aux.x-=1.0f;
 		e.joins[CODO_IZQ].rotate(aux);
 	}
 	else if(t<150)
@@ -319,22 +319,144 @@ void aniBaile(int t){
 			aux.x+=10.0f;
 			e.joins[HOMBRO_IZQ].rotate(aux);
 		}
-
-
 	}
 
 
 	printf("-> %d\n",t);
 	if(t<450){
-		glutTimerFunc(1000.0/60.0, aniBaile, t+1);
+		glutTimerFunc(1000.0/60.0, animBaile, t+1);
 	}else{
 		e.poseReposo();
 	}
 	glutPostRedisplay();
 }
 
-void aniAnda(int t){
+void animAnda(int t){
+	Vector3f aux;
+	if(t==0){
+		aux = e.joins[ROOT].angle;
+		aux.x-=5.0f;
+		e.joins[ROOT].rotate(aux);
+	
+		aux = e.joins[CODO_DER].angle;
+		aux.z-=20.0f;
+		e.joins[CODO_DER].rotate(aux);
+		
+		aux = e.joins[CODO_IZQ].angle;
+		aux.z+=20.0f;
+		e.joins[CODO_IZQ].rotate(aux);
+	}
+	if(25 > t%100){
+		//printf("paso1\n");
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=2.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		aux = e.joins[HOMBRO_IZQ].angle;
+		aux.x-=2.0f;
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x+=1.0f;
+		e.joins[CADERA_DER].rotate(aux);
+		aux = e.joins[CADERA_IZQ].angle;
+		aux.x-=1.0f;
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		aux = e.joins[TORSO].angle;
+		aux.y-=0.5f;
+		e.joins[TORSO].rotate(aux);
 
+		aux = e.joins[RODILLA_IZQ].angle;
+		aux.x+=2.0f;
+		e.joins[RODILLA_IZQ].rotate(aux);
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x-=2.0f;
+		e.joins[RODILLA_DER].rotate(aux);
+	}else if(50 > t%100){
+		//printf("paso2\n");
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x-=2.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		aux = e.joins[HOMBRO_IZQ].angle;
+		aux.x+=2.0f;
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=1.0f;
+		e.joins[CADERA_DER].rotate(aux);
+		aux = e.joins[CADERA_IZQ].angle;
+		aux.x+=1.0f;
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		aux = e.joins[TORSO].angle;
+		aux.y+=0.5f;
+		e.joins[TORSO].rotate(aux);
+		
+		aux = e.joins[RODILLA_IZQ].angle;
+		aux.x-=2.0f;
+		e.joins[RODILLA_IZQ].rotate(aux);
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x+=2.0f;
+		e.joins[RODILLA_DER].rotate(aux);
+	}else if(75 > t%100){
+		//printf("paso3\n");
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x-=2.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		aux = e.joins[HOMBRO_IZQ].angle;
+		aux.x+=2.0f;
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=1.0f;
+		e.joins[CADERA_DER].rotate(aux);
+		aux = e.joins[CADERA_IZQ].angle;
+		aux.x+=1.0f;
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		aux = e.joins[TORSO].angle;
+		aux.y+=0.5f;
+		e.joins[TORSO].rotate(aux);
+		
+		aux = e.joins[RODILLA_IZQ].angle;
+		aux.x-=2.0f;
+		e.joins[RODILLA_IZQ].rotate(aux);
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x+=2.0f;
+		e.joins[RODILLA_DER].rotate(aux);
+	}else if(100 > t%100){
+		//printf("paso4\n");
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=2.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		aux = e.joins[HOMBRO_IZQ].angle;
+		aux.x-=2.0f;
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x+=1.0f;
+		e.joins[CADERA_DER].rotate(aux);
+		aux = e.joins[CADERA_IZQ].angle;
+		aux.x-=1.0f;
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		aux = e.joins[TORSO].angle;
+		aux.y-=0.5f;
+		e.joins[TORSO].rotate(aux);
+		
+		aux = e.joins[RODILLA_IZQ].angle;
+		aux.x+=2.0f;
+		e.joins[RODILLA_IZQ].rotate(aux);
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x-=2.0f;
+		e.joins[RODILLA_DER].rotate(aux);
+	}
+	if(t<550){
+		glutTimerFunc(1000.0/60.0, animAnda, t+1);
+	}else{
+		e.poseReposo();
+	}
+	glutPostRedisplay();
 }
 
 void EscalaVentana(GLsizei w, GLsizei h){
@@ -369,7 +491,7 @@ void myKeyboard(unsigned char key,int x, int y){
 			else{
 				e.joinSelect=0;
 			}
-		break;
+			break;
 		case 'l':
 			if(e.joinSelect>0){
 				e.joinSelect--;
@@ -377,43 +499,43 @@ void myKeyboard(unsigned char key,int x, int y){
 			else{
 				e.joinSelect=e.joins.size()-1;
 			}
-		break;
-
+			break;
 		case 'a':
 			aux.y++;
 			e.joins[e.joinSelect].rotate(aux);
-		break;
+			break;
 		case 'd':
 			aux.y--;
 			e.joins[e.joinSelect].rotate(aux);
-		break;
+			break;
 		case 'w':
 			aux.x++;
 			e.joins[e.joinSelect].rotate(aux);
-		break;
+			break;
 		case 's':
 			aux.x--;
 			e.joins[e.joinSelect].rotate(aux);
-		break;
+			break;
 		case 'e':
 			aux.z++;
 			e.joins[e.joinSelect].rotate(aux);
-		break;
+			break;
 		case 'q':
 			aux.z--;
 			e.joins[e.joinSelect].rotate(aux);
-		break;
+			break;
 		case 'r':
-			aniBaile(0);
-		break;
+			animBaile(0);
+			break;
 		case 'f':
-			aniAnda(0);
+			animAnda(0);
+			break;
 		case 't':
-			aniSaludo(0);
-		break;
+			animSaludoCibermen(0);
+			break;
 		case 'g':
-			aniSalto(0);
-		break;
+			animSalto(0);
+			break;
 		case 27:
 			exit (0);
 	}
