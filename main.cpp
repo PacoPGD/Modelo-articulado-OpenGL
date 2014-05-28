@@ -18,7 +18,7 @@
 
 #include "esqueleto.hpp"
 
-
+bool banderaAux=true;
 
 
 Esqueleto e;
@@ -249,7 +249,93 @@ void aniSaludo(int t){
 	glutPostRedisplay();
 }
 
-	
+void aniBaile(int t){
+	Vector3f aux;
+
+	if(t<50)
+	{
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=1.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		aux = e.joins[HOMBRO_IZQ].angle;
+		aux.x+=1.0f;
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		aux = e.joins[CODO_DER].angle;
+		aux.x+=1.0f;
+		e.joins[CODO_DER].rotate(aux);
+		aux = e.joins[CODO_IZQ].angle;
+		aux.x+=1.0f;
+		e.joins[CODO_IZQ].rotate(aux);
+	}
+	else if(t<150)
+	{
+		aux = e.joins[TORSO].angle;
+		aux.y-=0.5f;
+		e.joins[TORSO].rotate(aux);
+	}
+	else if(t<250)
+	{
+		aux = e.joins[TORSO].angle;
+		aux.y+=0.5f;
+		e.joins[TORSO].rotate(aux);
+	}
+	else if(t<350)
+	{
+		aux = e.joins[TORSO].angle;
+		aux.y-=0.5f;
+		e.joins[TORSO].rotate(aux);
+	}
+	else if(t<450)
+	{
+		aux = e.joins[TORSO].angle;
+		aux.y+=0.5f;
+		e.joins[TORSO].rotate(aux);
+	}
+
+	if(t> 50)
+	{
+		if(t%10==0)
+		{
+			if(banderaAux==true)
+				banderaAux=false;
+			else
+				banderaAux=true;
+		}
+		if(banderaAux==true)
+		{
+			aux = e.joins[HOMBRO_DER].angle;
+			aux.x-=10.0f;
+			e.joins[HOMBRO_DER].rotate(aux);
+			aux = e.joins[HOMBRO_IZQ].angle;
+			aux.x-=10.0f;
+			e.joins[HOMBRO_IZQ].rotate(aux);
+		}
+		else
+		{
+			aux = e.joins[HOMBRO_DER].angle;
+			aux.x+=10.0f;
+			e.joins[HOMBRO_DER].rotate(aux);
+			aux = e.joins[HOMBRO_IZQ].angle;
+			aux.x+=10.0f;
+			e.joins[HOMBRO_IZQ].rotate(aux);
+		}
+
+
+	}
+
+
+	printf("-> %d\n",t);
+	if(t<450){
+		glutTimerFunc(1000.0/60.0, aniBaile, t+1);
+	}else{
+		e.poseReposo();
+	}
+	glutPostRedisplay();
+}
+
+void aniAnda(int t){
+
+}
 
 void EscalaVentana(GLsizei w, GLsizei h){
 	if(h==0) h=1;
@@ -317,6 +403,11 @@ void myKeyboard(unsigned char key,int x, int y){
 			aux.z--;
 			e.joins[e.joinSelect].rotate(aux);
 		break;
+		case 'r':
+			aniBaile(0);
+		break;
+		case 'f':
+			aniAnda(0);
 		case 't':
 			aniSaludo(0);
 		break;
