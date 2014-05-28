@@ -215,14 +215,38 @@ void aniSalto(int t){
 }
 
 void aniSaludo(int t){
+	Vector3f aux;
+	
+	if(t<60){
+		aux = e.joins[ROOT].angle;
+		aux.y+=0.5f;
+		e.joins[ROOT].rotate(aux);
+	}
+	else if(t<90)
+	{
+		aux = e.joins[TORSO].angle;
+		aux.y-=0.5f;
+		e.joins[TORSO].rotate(aux);
+	}
+
+	else if(t<200)
+	{
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=1.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		aux = e.joins[CODO_IZQ].angle;
+		aux.z+=1.2f;
+		e.joins[CODO_IZQ].rotate(aux);
+	}
 
 
-	glutPostRedisplay();
-	if(t<1000){
-		glutTimerFunc(1000.0/60.0, aniSalto, t+1);
+	printf("-> %d\n",t);
+	if(t<300){
+		glutTimerFunc(1000.0/60.0, aniSaludo, t+1);
 	}else{
 		e.poseReposo();
 	}
+	glutPostRedisplay();
 }
 
 	
