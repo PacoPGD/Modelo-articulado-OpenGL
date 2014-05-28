@@ -156,7 +156,11 @@ public:
 	
 	void poseReposo(){
 		joins.clear();
-	
+		
+		globalPos.x=0.0f;
+		globalPos.y=0.0f;
+		globalPos.z=0.0f;
+		
 		Vector3f pos(1,140,-12);
 		Vector3f topLimit(360,360,360);
 		Vector3f botLimit(-360,-360,-360);
