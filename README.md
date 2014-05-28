@@ -15,4 +15,6 @@ F: Andar
 T: Saludo
 G: Salto
 
+Ejemplo de ejecución en video: https://www.youtube.com/watch?v=hWeiALqFfKc&feature=youtu.be
+
 Leer el fichero de documentación para obtener más información.
