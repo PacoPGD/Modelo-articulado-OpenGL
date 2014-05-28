@@ -205,7 +205,6 @@ void animSalto(int t){
 		e.joins[HOMBRO_IZQ].rotate(aux);
 	}
 
-	printf("-> %d\n",t);
 	if(t<350){
 		glutTimerFunc(1000.0/60.0, animSalto, t+1);
 	}else{
@@ -239,8 +238,6 @@ void animSaludoCibermen(int t){
 		e.joins[CODO_IZQ].rotate(aux);
 	}
 
-
-	printf("-> %d\n",t);
 	if(t<300){
 		glutTimerFunc(1000.0/60.0, animSaludoCibermen, t+1);
 	}else{
@@ -322,7 +319,6 @@ void animBaile(int t){
 	}
 
 
-	printf("-> %d\n",t);
 	if(t<450){
 		glutTimerFunc(1000.0/60.0, animBaile, t+1);
 	}else{
