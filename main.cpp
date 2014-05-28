@@ -20,10 +20,6 @@
 
 
 
-#define ANIMACION_REPOSO 0
-#define ANIMACION_SALTO 1
-#define ANIMACION_SALUDO 2
-
 
 Esqueleto e;
 GLdouble camX=0.0, camY=100.0, camZ=-250.0;
@@ -78,13 +74,139 @@ void DibujaEscena(){
 
 void aniSalto(int t){
 	Vector3f aux;
-	aux = e.joins[1].angle;
-	aux.x++;
-	aux.y++;
-	aux.z++;
-	e.joins[1].rotate(aux);
+	
+	if(t<50){
+		aux = e.joins[ROOT].angle;
+		aux.x+=0.3f;
+		e.joins[ROOT].rotate(aux);
+	
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x+=0.8f;
+		e.joins[RODILLA_DER].rotate(aux);
+		e.joins[RODILLA_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=0.5f;
+		e.joins[CADERA_DER].rotate(aux);
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=0.5f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		
+		aux = e.joins[CINTURA].angle;
+		aux.x-=0.5f;
+		e.joins[CINTURA].rotate(aux);
+		
+		e.move(e.globalPos.x, e.globalPos.y-0.1f, e.globalPos.z);
+	}else if(t<75){
+		aux = e.joins[ROOT].angle;
+		aux.x-=0.2f;
+		e.joins[ROOT].rotate(aux);
+	
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x+=0.2f;
+		e.joins[RODILLA_DER].rotate(aux);
+		e.joins[RODILLA_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=0.1f;
+		e.joins[CADERA_DER].rotate(aux);
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x-=0.2f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		
+		aux = e.joins[CINTURA].angle;
+		aux.x+=0.2f;
+		e.joins[CINTURA].rotate(aux);
+	}else if(t<150){
+		if(t<125){
+			aux = e.joins[HOMBRO_DER].angle;
+			aux.x-=2.8f;
+			e.joins[HOMBRO_DER].rotate(aux);
+			e.joins[HOMBRO_IZQ].rotate(aux);
+		}
+		
+		aux = e.joins[ROOT].angle;
+		aux.x-=0.1f;
+		e.joins[ROOT].rotate(aux);
+	
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x-=0.8f;
+		e.joins[RODILLA_DER].rotate(aux);
+		e.joins[RODILLA_IZQ].rotate(aux);
+		
+		aux = e.joins[CADERA_DER].angle;
+		aux.x+=1.0f;
+		e.joins[CADERA_DER].rotate(aux);
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+
+		
+		aux = e.joins[CINTURA].angle;
+		aux.x-=0.5f;
+		e.joins[CINTURA].rotate(aux);
+		
+		e.move(e.globalPos.x, e.globalPos.y+0.5f, e.globalPos.z);
+	}else if(t<200){
+		e.move(e.globalPos.x, e.globalPos.y+0.2f, e.globalPos.z);
+	}else if(t<225){
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=0.1f;
+		e.joins[CADERA_DER].rotate(aux);
+		e.joins[CADERA_IZQ].rotate(aux);
+		
+		e.move(e.globalPos.x, e.globalPos.y-0.3f, e.globalPos.z);
+	}else if(t<275){
+		aux = e.joins[CINTURA].angle;
+		aux.x-=0.5f;
+		e.joins[CINTURA].rotate(aux);
+	
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=0.5f;
+		e.joins[CADERA_DER].rotate(aux);
+		e.joins[CADERA_IZQ].rotate(aux);
+			
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x+=0.5f;
+		e.joins[RODILLA_DER].rotate(aux);
+		e.joins[RODILLA_IZQ].rotate(aux);
+		
+		e.move(e.globalPos.x, e.globalPos.y-0.8f, e.globalPos.z);
+	}else if(t<300){
+		aux = e.joins[CINTURA].angle;
+		aux.x-=0.5f;
+		e.joins[CINTURA].rotate(aux);
+	
+		aux = e.joins[CADERA_DER].angle;
+		aux.x-=0.1f;
+		e.joins[CADERA_DER].rotate(aux);
+		e.joins[CADERA_IZQ].rotate(aux);
+			
+		aux = e.joins[RODILLA_DER].angle;
+		aux.x-=0.5f;
+		e.joins[RODILLA_DER].rotate(aux);
+		e.joins[RODILLA_IZQ].rotate(aux);
+		
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=1.0f;
+		e.joins[HOMBRO_DER].rotate(aux);
+
+		e.joins[HOMBRO_IZQ].rotate(aux);
+		e.move(e.globalPos.x, e.globalPos.y+0.1f, e.globalPos.z);
+	}else if(t<350){
+		aux = e.joins[HOMBRO_DER].angle;
+		aux.x+=1.3f;
+		e.joins[HOMBRO_DER].rotate(aux);
+		e.joins[HOMBRO_IZQ].rotate(aux);
+	}
+
 	printf("-> %d\n",t);
-	if(t<100){
+	if(t<350){
 		glutTimerFunc(1000.0/60.0, aniSalto, t+1);
 	}else{
 		e.poseReposo();
@@ -206,6 +328,7 @@ void myKeyboardSpecial(int key,int x, int y){
 		camZ+=5.0f;
 		break;
 	}
+	glutPostRedisplay();
 }
 
 
